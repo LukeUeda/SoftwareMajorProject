@@ -1,0 +1,9 @@
+div#day{
+    height: 700px;
+    width: 170px;
+    background-color: #CDCDCD;
+}
+
+body{
+    background-color: black;
+}
