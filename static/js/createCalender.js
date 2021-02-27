@@ -9,28 +9,21 @@ class Period{
         this.label.style.transform = "translate(7em,0.005em)";
     
         this.htmlElmnt.appendChild(this.label);
-        let name = String(Math.floor((num + 1) * 0.25)) + ":" + pad(((((num+1) * 25)/100) % 1) * 60, 2);
-    
-        this.htmlElmnt.addEventListener("mouseenter", function(e){
-            e.target.style.boxShadow = "inset 0 0 10px rgba(0,0,0,0.2)";
-            e.target.children[0].innerHTML = "<   " + name;
-            e.target.children[0].style.transition = "0.2s ease-in-out";
-            e.target.children[0].setAttribute("pointer-events", "none");
-            e.target.children[0].style.transform = "translate(8em,0.003em)";
+        let end_time = String(Math.floor((num + 1) * 0.25)) + ":" + pad(((((num+1) * 25)/100) % 1) * 60, 2);
+        let start_time = String(Math.floor((num) * 0.25)) + ":" + pad(((((num+1) * 25)/100) % 1) * 60, 2);
+
+        this.htmlElmnt.addEventListener("mouseover", function(e){
+            if(e.which == 1){
+                console.log(num)
+            }
         });
-    
-        this.htmlElmnt.addEventListener("mouseleave", function(e){
-            console.log("hover");
-            e.target.style.boxShadow = "";
-            e.target.children[0].style.transform = "translate(7em,0.003em)";
-            e.target.children[0].innerHTML = "";
-        });
-    
+
         this.htmlElmnt.style.background = "#357AFF";
         this.htmlElmnt.style.width = "200px";
         this.htmlElmnt.style.height = "8px";
     
-        this.activity = activity;  
+        this.activity = activity;
+        this.num = num;
     }
 }
 
