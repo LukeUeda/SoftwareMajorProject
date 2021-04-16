@@ -3,13 +3,10 @@
     <head> 
         <meta charset="utf-8">
         <style rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css') }}"></style>
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <title>Calendar</title>
     </head>
-    <body id = "calendar">
-        <script type=text/javascript src="{{url_for('static', filename='js/createCalender.js') }}"></script>
+    <body class="main">
+        <script type="text/javascript" src="{{url_for('static', filename='js/createCalender.js') }}"></script>
     </body>
 </html>

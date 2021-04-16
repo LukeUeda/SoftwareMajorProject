@@ -1,66 +1,90 @@
-class Period{
-    constructor(num, activity){
-        this.htmlElmnt = document.createElement("div");
-        this.htmlElmnt.style.textAlign = "center";
-    
-        this.label = document.createElement("div");
-        this.label.style.textAlign = "inline-block";
-        this.label.style.fontFamily = "'Poppins', sans-serif";
-        this.label.style.transform = "translate(7em,0.005em)";
-    
-        this.htmlElmnt.appendChild(this.label);
-        let end_time = String(Math.floor((num + 1) * 0.25)) + ":" + pad(((((num+1) * 25)/100) % 1) * 60, 2);
-        let start_time = String(Math.floor((num) * 0.25)) + ":" + pad(((((num+1) * 25)/100) % 1) * 60, 2);
+class Day {
+    constructor(){
+        this.container = document.createElement("div");
+        this.container.setAttribute("class", "day");
 
-        this.htmlElmnt.addEventListener("mouseover", function(e){
-            if(e.which == 1){
-                console.log(num)
-            }
-        });
-
-        this.htmlElmnt.style.background = "#357AFF";
-        this.htmlElmnt.style.width = "200px";
-        this.htmlElmnt.style.height = "8px";
-    
-        this.activity = activity;
-        this.num = num;
-    }
-}
-
-class Day{
-    //Increment specifies the duration of a single period (in minutes)
-
-    constructor(date, increment){
-        this.htmlElmnt = document.createElement("td");
-
-        this.htmlElmnt.style.backgroundColor = "#FFFFFF";
-        this.htmlElmnt.style.height = String(24 * 60/increment);
-        this.htmlElmnt.style.width = "200px";
-    
-        document.getElementById("calendar").appendChild(this.htmlElmnt);
-    
-        this.date = date;
-        this.increment = increment;
-
-        //Dictionary stores period objects
-        this.periods = {};
+        this.cells = []
+        this.createCells(96);
     }
 
-    createPeriods() {
-        for(var p = 0; p < 24 * 60/this.increment; p++){
-            this.periods[p] = new Period(p, "Free");
-            this.htmlElmnt.appendChild(this.periods[p].htmlElmnt);
+    createCells(num){
+        this.cells = [];
+        for(var i = 0; i < num; i++){
+            var cell = new Cell();
+            this.cells.push(cell);
+            this.container.appendChild(cell.container);
         }
     }
 }
 
-function pad(n, width, z) {
-    z = z || '0';
-    n = n + '';
-    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-  }
+class Cell{
+    constructor(){
+        this.container = document.createElement("div");
+        this.container.setAttribute("class", "cell");
+    }
+}
 
-document.getElementById("calendar").style.alignItems = "centre";
+class WeekNavigationContainer {
+    constructor(){
+        this.container = document.createElement("div");
+        this.container.setAttribute("class", "container")
 
-var day = new Day(20, 15);
-day.createPeriods();
+        //Define sections of week container;
+        this.prev = document.createElement("div");
+        this.prev.setAttribute("class", "prev");
+        this.container.appendChild(this.prev);
+
+        this.calender = new WeekContainer();
+        this.container.appendChild(this.calender.container);
+
+        this.next = document.createElement("div");
+        this.next.setAttribute("class", "next");
+        this.container.appendChild(this.next);
+    }
+}
+
+class WeekContainer {
+    constructor(){
+        this.container = document.createElement("div");
+        this.container.setAttribute("class", "calender");
+
+        this.days = [];
+        this.createDays();
+    }
+
+    createDays(){
+        this.days = []
+        for(var d = 0; d < 7; d++){
+            var day = new Day();
+            this.days.push(day);
+            this.container.appendChild(day.container);
+        }
+    }
+}
+
+class Menu{
+    constructor(){
+        this.container = document.createElement("div");
+        this.container.setAttribute("class", "menu");
+    }
+}
+
+class WeekTitle{
+    constructor(){
+        this.container = document.createElement("div");
+        this.container.setAttribute("class", "menu");
+    }
+
+    setTitle(name){
+        this.container.innerHTML = name;
+    }
+}
+
+w = new WeekNavigationContainer();
+m = new Menu();
+t = new WeekTitle();
+t.setTitle("Yeet");
+
+document.querySelector(".main").appendChild(m.container);
+document.querySelector(".main").appendChild(t.container);
+document.querySelector(".main").appendChild(w.container);
