@@ -18,12 +18,7 @@ body{
 }
 
 .cell{
-    background-color: #AA0000;
     user-select: none;
-}
-
-.cell:hover{
-    background-color: #FF0000;
 }
 
 .day{
