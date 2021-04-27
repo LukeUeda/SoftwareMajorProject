@@ -23,25 +23,32 @@ class Day {
 
 class Cell{
     constructor(number, day){
+        //Set up UI
         this.container = document.createElement("div");
         this.container.setAttribute("class", "cell");
         this.container.style.backgroundColor = "#FFFFFF";
-        this.text = document.createElement("div");
-        this.container.appendChild(this.text);
 
-        this.container.addEventListener("mouseover", function(){
-            console.log(this.text);
-            if(document.getElementById("mode").getAttribute("class") == "highlight"){
-                day.highlightEnd = number * 0.25;
-            }
-        });
+        //Asign values
+        var text = document.createElement("div");
+        text.innerHTML = number;
+        this.container.appendChild(text);
+
 
         this.container.addEventListener("mousedown", function(){
+            //If highlight mode is active, than the pressed cell is the end of the segment.
             if(document.getElementById("mode").getAttribute("class") == "highlight"){
+                //Exit highlight mode.
                 document.getElementById("mode").setAttribute("class", "");
-                day.highlightEnd = number * 0.25;
+
+                //Set value for highlight end.
+                day.highlightEnd = (number + 1) * 0.25;
                 console.log(day.highlightStart + "," + day.highlightEnd);
+
+                //Activate task set menu.
+                document.getElementById("highlight_ui").style.display = "block";
             }
+
+            //If highlight mode is not active, than activate and set current cell to begining.
             else if(document.getElementById("mode").getAttribute("class") != "highlight"){
                 document.getElementById("mode").setAttribute("class", "highlight");
                 day.highlightStart = number * 0.25;
@@ -98,7 +105,7 @@ class Menu{
 class WeekTitle{
     constructor(){
         this.container = document.createElement("div");
-        this.container.setAttribute("class", "menu");
+        this.container.setAttribute("class", "title");
     }
 
     setTitle(name){

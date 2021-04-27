@@ -1,7 +1,8 @@
 body{
-    background-color:#4987FF;
+    background-color: #E6E6E8;
     display: grid;
     place-items: center;
+    margin: 0;
 }
 
 .container{
@@ -19,6 +20,7 @@ body{
 
 .cell{
     user-select: none;
+    font-size: xx-small;
 }
 
 .day{
@@ -36,3 +38,54 @@ body{
     background-color: tomato;
 }
 
+.menu{
+    background-color: white;
+    height: 70px; /* Sets the height */
+    width: 100%; /* Sets the width */
+}
+
+#highlight_ui{
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display:none;
+}
+
+#task_setter{
+    width: 500px;
+    height: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -150px;
+    margin-left: -250px;
+    background-color: white;
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: 10% 35% 10% 35% 10%;
+    grid-template-rows: 40% 20% 40%;
+}
+
+#button{
+    border-radius: 10px;
+}
+
+.clear{
+    background-color: black;
+    width: 100%;
+    height: 100%    ;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.task{
+    background-color: red;
+    width: 100%;
+    height: 100%;
+    grid-column: 4;
+    grid-row: 2;
+}
