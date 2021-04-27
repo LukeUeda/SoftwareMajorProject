@@ -68,6 +68,7 @@ body{
     display: grid;
     grid-template-columns: 10% 35% 10% 35% 10%;
     grid-template-rows: 40% 20% 40%;
+    font-family: 'Poppins', sans-serif;
 }
 
 #button{
