@@ -30,15 +30,24 @@ class Cell{
 
         //Asign values
         var text = document.createElement("div");
-        text.innerHTML = number;
+        text.style.position = "relative";
+        text.style.left = "130%";
+
+        //text.innerHTML = number;
         this.container.appendChild(text);
 
+        var container = this.container;
 
         this.container.addEventListener("mousedown", function(){
             //If highlight mode is active, than the pressed cell is the end of the segment.
             if(document.getElementById("mode").getAttribute("class") == "highlight"){
                 //Exit highlight mode.
                 document.getElementById("mode").setAttribute("class", "");
+
+                //Style change;
+                container.style.border = "2px solid black";
+                container.style.borderTop = "";
+                text.innerHTML = "<" + String((number + 1) * 0.25);
 
                 //Set value for highlight end.
                 day.highlightEnd = (number + 1) * 0.25;
@@ -52,6 +61,11 @@ class Cell{
             else if(document.getElementById("mode").getAttribute("class") != "highlight"){
                 document.getElementById("mode").setAttribute("class", "highlight");
                 day.highlightStart = number * 0.25;
+
+                text.innerHTML = "<" + String(number * 0.25);
+
+                container.style.border = "2px solid black";
+                container.style.borderBottom = "";
             }
         });
     }
