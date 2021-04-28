@@ -16,10 +16,11 @@
             <div id=task_setter>
                 Select Action...
                 <div class="taskButtonContainer">
-                    <div id="button" class="clear">Clear</div>
+                    <div id="button" class="clear" onmousedown="clear()">Clear</div>
                     <div id="button" class="task">Add Task</div>                    
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="{{url_for('static', filename='js/buttonFunctions.js') }}"></script>
     </body>
 </html>
