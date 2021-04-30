@@ -38,7 +38,7 @@ body{
     background-color: tomato;
 }
 
-.menu{
+#menu{
     background-color: white;
     height: 70px; /* Sets the height */
     width: 100%; /* Sets the width */
@@ -51,6 +51,9 @@ body{
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
+
+    z-index: 1;
+
     display:none;
 }
 
