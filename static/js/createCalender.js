@@ -1,29 +1,3 @@
-class Day {
-    constructor(day){
-
-        this.value = day
-
-        this.container = document.createElement("div");
-        this.container.setAttribute("class", "day");
-        this.container.setAttribute("id", this.value);
-
-        this.cells = []
-        this.createCells(96);
-
-        this.highlightStart = 1
-        this.highlightEnd = 1
-    }
-
-    createCells(num){
-        this.cells = [];
-        for(var i = 0; i < num; i++){
-            var cell = new Cell(i, this);
-            this.cells.push(cell);
-            this.container.appendChild(cell.container);
-        }
-    }
-}
-
 class Cell{
     constructor(number, day){
         //Set up UI
@@ -85,22 +59,29 @@ class Cell{
     }
 }
 
-class WeekNavigationContainer {
-    constructor(){
+class Day {
+    constructor(day){
+
+        this.value = day
+
         this.container = document.createElement("div");
-        this.container.setAttribute("class", "container")
+        this.container.setAttribute("class", "day");
+        this.container.setAttribute("id", this.value);
 
-        //Define sections of week container;
-        this.prev = document.createElement("div");
-        this.prev.setAttribute("class", "prev");
-        this.container.appendChild(this.prev);
+        this.cells = []
+        this.createCells(96);
 
-        this.calender = new WeekContainer();
-        this.container.appendChild(this.calender.container);
+        this.highlightStart = 1
+        this.highlightEnd = 1
+    }
 
-        this.next = document.createElement("div");
-        this.next.setAttribute("class", "next");
-        this.container.appendChild(this.next);
+    createCells(num){
+        this.cells = [];
+        for(var i = 0; i < num; i++){
+            var cell = new Cell(i, this);
+            this.cells.push(cell);
+            this.container.appendChild(cell.container);
+        }
     }
 }
 
@@ -123,13 +104,26 @@ class WeekContainer {
     }
 }
 
-class Menu{
+export class WeekNavigationContainer {
     constructor(){
-        this.container = document.getElementById("menu");
+        this.container = document.createElement("div");
+        this.container.setAttribute("class", "container")
+
+        //Define sections of week container;
+        this.prev = document.createElement("div");
+        this.prev.setAttribute("class", "prev");
+        this.container.appendChild(this.prev);
+
+        this.calender = new WeekContainer();
+        this.container.appendChild(this.calender.container);
+
+        this.next = document.createElement("div");
+        this.next.setAttribute("class", "next");
+        this.container.appendChild(this.next);
     }
 }
 
-class WeekTitle{
+export class WeekTitle{
     constructor(){
         this.container = document.createElement("div");
         this.container.setAttribute("class", "title");
@@ -139,54 +133,3 @@ class WeekTitle{
         this.container.innerHTML = name;
     }
 }
-
-class HighlightUI{
-    constructor(){
-        var clear = document.getElementById("clear");
-        var addTask = document.getElementById("task");
-        var cancel = document.getElementById("cancel");
-
-        cancel.addEventListener("mousedown", cancelFunc)
-        clear.addEventListener("mousedown", clearFunc);
-        addTask.addEventListener("mousedown", addTaskFunc);
-    }
-}
-
-class Main{
-    constructor(){
-        var w = new WeekNavigationContainer();
-        var m = new Menu();
-        var t = new WeekTitle();
-        var h = new HighlightUI();
-        t.setTitle("Yeet");
-
-        var body = document.querySelector(".main");
-
-        body.appendChild(m.container);
-        body.appendChild(t.container);
-        body.appendChild(w.container);
-    }
-}
-
-function clearFunc(){
-    document.getElementById("highlight_ui").style.display = "none";
-    document.getElementById("mode").setAttribute("class", "");
-}
-
-function addTaskFunc(){
-    document.getElementById("task_setter").style.display = "none";
-    document.getElementById("task_parameters").style.display = "grid";
-}
-
-function submitFunc(){
-    document.getElementById("highlight_ui").style.display = "none";
-    document.getElementById("mode").setAttribute("class", "");
-}
-
-function cancelFunc(){
-    document.getElementById("highlight_ui").style.display = "none";
-    document.getElementById("task_parameters").style.display = "none";
-    document.getElementById("mode").setAttribute("class", "");
-}
-
-main = new Main();
