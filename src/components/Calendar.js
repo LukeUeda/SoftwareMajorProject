@@ -12,6 +12,8 @@ class Calendar extends Component {
             data: null,
             isLoading: false,
             error: null,
+            sectionStart: null,
+            sectionEnd: null,
         };
     };
 
@@ -24,8 +26,8 @@ class Calendar extends Component {
                     })}
                 </div>
                 <div className="row">
-                    {[...Array(7)].map(name => {
-                        return <div className="col-lg border m-0 p-0"><Day></Day></div>
+                    {[...Array(7)].map((value, index) => {
+                        return <div className="col-lg border m-0 p-0"><Day val={index}></Day></div>
                     })}
                 </div>
             </div>

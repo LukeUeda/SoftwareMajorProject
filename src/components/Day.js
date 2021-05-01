@@ -4,8 +4,8 @@ import Cell from "./Cell";
 
 class Day extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             data: null,
             isLoading: false,
@@ -15,11 +15,9 @@ class Day extends Component {
 
     render() {
         return (
-            <div style={{height:"700px"}}>
-                {[...Array(48)].map(i =>{
-                    return <Cell></Cell>
-                    })
-                }
+            <div style={{height:"720px"}}>
+                {[...Array(48)].map((value, index) => {
+                        return <Cell parent={this} val={index}></Cell>;})}
             </div>
         );
     }
