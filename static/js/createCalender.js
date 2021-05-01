@@ -67,6 +67,7 @@ class Cell{
 
                     //Activate task set menu.
                     document.getElementById("highlight_ui").style.display = "block";
+                    document.getElementById("task_setter").style.display = "grid";
                 }
 
                 //If highlight mode is not active, than activate and set current cell to begining.
@@ -143,7 +144,9 @@ class HighlightUI{
     constructor(){
         var clear = document.getElementById("clear");
         var addTask = document.getElementById("task");
+        var cancel = document.getElementById("cancel");
 
+        cancel.addEventListener("mousedown", cancelFunc)
         clear.addEventListener("mousedown", clearFunc);
         addTask.addEventListener("mousedown", addTaskFunc);
     }
@@ -171,7 +174,18 @@ function clearFunc(){
 }
 
 function addTaskFunc(){
+    document.getElementById("task_setter").style.display = "none";
+    document.getElementById("task_parameters").style.display = "grid";
+}
+
+function submitFunc(){
     document.getElementById("highlight_ui").style.display = "none";
+    document.getElementById("mode").setAttribute("class", "");
+}
+
+function cancelFunc(){
+    document.getElementById("highlight_ui").style.display = "none";
+    document.getElementById("task_parameters").style.display = "none";
     document.getElementById("mode").setAttribute("class", "");
 }
 
