@@ -3,10 +3,7 @@ import React, {Component} from 'react';
 import Loader from "./Loader";
 import Day from "./Day.js";
 import HighlightUI from "./highlightUI.js";
-import TaskParameterUI from "./TaskParameterUI.js";
-import ArticleList from "./ArticleList.js";
 import TimePeriodAdd from "./TimePeriodAdd.js";
-import {post} from "axios";
 
 class Calendar extends Component {
 
@@ -20,27 +17,6 @@ class Calendar extends Component {
             submit: false,
         };
     };
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.submit){
-            console.log(this.state)
-            var timePeriod = {
-                index: this.state.selectionEnd,
-                date: this.state.selectionDay,
-                event: this.state.selectionEvent
-            }
-
-            async function postTimePeriod() {
-                try {
-                    const response = await post('/api/timePeriod', timePeriod);
-                    this.props.history.push(`/timePeriods/${response.data._id}`);
-                } catch(error) {
-                    console.log('error', error);
-                }
-            }
-            postTimePeriod();
-        }
-    }
 
     render() {
         return(
@@ -58,8 +34,6 @@ class Calendar extends Component {
                     </div>
                 </div>
                 <HighlightUI parent={this}></HighlightUI>
-                <TaskParameterUI></TaskParameterUI>
-                <ArticleList />
             </>
         );
 

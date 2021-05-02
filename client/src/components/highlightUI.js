@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
+import {post} from "axios";
+import {useHistory} from "react-router-dom";
 // import {Link} from 'react-router-dom';
 
 function ModalHeader(props){
@@ -13,6 +15,24 @@ function ModalHeader(props){
 }
 
 function ClearTaskSelect(props){
+    const timePeriod = { index: props.parent.state.sectionEnd, date: props.parent.state.selectionDay, event: "Free"}
+    let history = useHistory();
+
+    function handleSubmit(event) {
+        console.log(timePeriod)
+        event.preventDefault();
+        if(!timePeriod.index || !timePeriod.date || !timePeriod.event ) return
+        console.log("LEGO")
+        async function postTimePeriod() {
+            try {
+                const response = await post('/api/timePeriod', timePeriod);
+                history.push(`/timePeriods/${response.data._id}`);
+            } catch(error) {
+            }
+        }
+        postTimePeriod();
+    }
+
     return(
         <>
             <div className="modal-body">
@@ -20,9 +40,7 @@ function ClearTaskSelect(props){
             </div>
             <div className="modal-footer modal-dialog-centered container">
                 <button className="btn btn-block btn-dark col-sm"
-                    onClick={() => {
-                        props.parent.setState({selectionEvent: "Free", submit: true})
-                    }}>Clear</button>
+                    onClick={handleSubmit}>Clear</button>
                 <button className="btn btn-block btn-primary col-sm"
                         data-slide="next"
                         href="#highlightUI">Add Task</button>
@@ -69,7 +87,7 @@ class HighlightUI extends Component {
                                     <ClearTaskSelect parent={this.props.parent}/>
                                 </div>
                                 <div className="carousel-item">
-                                    <TaskParameters parent={this.props.parent}/>
+                                    <TaskParameters parent={this}/>
                                 </div>
                             </div>
                         </div>
