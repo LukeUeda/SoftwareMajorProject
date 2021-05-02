@@ -4,6 +4,7 @@ import Loader from "./Loader";
 import Day from "./Day.js";
 import HighlightUI from "./highlightUI.js";
 import TaskParameterUI from "./TaskParameterUI";
+import ArticleList from "./ArticleList";
 
 class Calendar extends Component {
 
@@ -31,6 +32,7 @@ class Calendar extends Component {
                 </div>
                 <HighlightUI></HighlightUI>
                 <TaskParameterUI></TaskParameterUI>
+                <ArticleList />
             </>
         );
 
