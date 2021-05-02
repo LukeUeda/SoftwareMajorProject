@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const MONGODB_URI = "mongodb://root:password@portainer.elite130:32781/admin";
+const MONGODB_URI = "mongodb://root:password@192.168.1.200:32781/admin";
 
 mongoose
     .connect(MONGODB_URI, { useNewUrlParser: true, useFindAndModify: false })
