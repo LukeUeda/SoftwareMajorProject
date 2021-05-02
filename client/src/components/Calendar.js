@@ -3,17 +3,44 @@ import React, {Component} from 'react';
 import Loader from "./Loader";
 import Day from "./Day.js";
 import HighlightUI from "./highlightUI.js";
-import TaskParameterUI from "./TaskParameterUI";
-import ArticleList from "./ArticleList";
+import TaskParameterUI from "./TaskParameterUI.js";
+import ArticleList from "./ArticleList.js";
+import TimePeriodAdd from "./TimePeriodAdd.js";
+import {post} from "axios";
 
 class Calendar extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-
+            selectionDay: null,
+            sectionStart: null,
+            sectionEnd: null,
+            selectionEvent: null,
+            submit: false,
         };
     };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.state.submit){
+            console.log(this.state)
+            var timePeriod = {
+                index: this.state.selectionEnd,
+                date: this.state.selectionDay,
+                event: this.state.selectionEvent
+            }
+
+            async function postTimePeriod() {
+                try {
+                    const response = await post('/api/timePeriod', timePeriod);
+                    this.props.history.push(`/timePeriods/${response.data._id}`);
+                } catch(error) {
+                    console.log('error', error);
+                }
+            }
+            postTimePeriod();
+        }
+    }
 
     render() {
         return(
@@ -26,11 +53,11 @@ class Calendar extends Component {
                     </div>
                     <div className="row">
                         {[...Array(7)].map((value, index) => {
-                            return <div className="col-lg border m-0 p-0"><Day val={index}></Day></div>
+                            return <div className="col-lg border m-0 p-0"><Day parent={this} index={index}></Day></div>
                         })}
                     </div>
                 </div>
-                <HighlightUI></HighlightUI>
+                <HighlightUI parent={this}></HighlightUI>
                 <TaskParameterUI></TaskParameterUI>
                 <ArticleList />
             </>

@@ -3,10 +3,10 @@ const Schema = mongoose.Schema
 
 const TimePeriod = new Schema(
     {
-        index: { type: Number, required: true},
+        index: { type: String, required: true},
         date: { type: String, required: true},
-        event: { type: Number, required: true},
+        event: { type: String, required: true},
     }
 );
 
-module.exports = mongoose.model('timePeriod', TimePeriod)
+module.exports = mongoose.model('time_period', TimePeriod)

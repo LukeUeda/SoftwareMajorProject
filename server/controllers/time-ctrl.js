@@ -58,7 +58,7 @@ updateTimePeriod = async (req, res) => {
         timePeriod.save().then(() => {
                 return res.status(200).json({
                     success: true,
-                    id: movie._id,
+                    id: time_period._id,
                     message: 'Time period updated!',
                 })
             })
@@ -71,7 +71,7 @@ updateTimePeriod = async (req, res) => {
     })
 }
 
-getTimePeriod = async (req, res) => {
+getTimePeriods = async (req, res) => {
     await TimePeriod.find({}, (err, timePeriods) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
@@ -79,14 +79,14 @@ getTimePeriod = async (req, res) => {
         if (!timePeriods.length) {
             return res
                 .status(404)
-                .json({ success: false, error: `Movie not found` })
+                .json({ success: false, error: `TimePeriods not found!` })
         }
-        return res.status(200).json({ success: true, data: movies })
+        return res.status(200).json({ success: true, data: timePeriods })
     }).catch(err => console.log(err))
 }
 
 module.exports = {
     createTimePeriod,
     updateTimePeriod,
-    getTimePeriod,
+    getTimePeriods,
 }
