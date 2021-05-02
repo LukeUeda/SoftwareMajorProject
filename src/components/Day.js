@@ -7,11 +7,16 @@ class Day extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null,
-            isLoading: false,
-            error: null,
+            sectionStart: null,
+            sectionEnd: null,
         };
     };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.sectionEnd != this.state.sectionEnd) {
+            console.log(this.state.sectionStart, this.state.sectionEnd)
+        }
+    }
 
     render() {
         return (

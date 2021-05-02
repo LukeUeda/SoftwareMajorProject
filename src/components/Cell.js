@@ -6,9 +6,6 @@ class Cell extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null,
-            isLoading: false,
-            error: null,
             color: "#FFFFFF",
             toggle: "",
             target: ""
@@ -19,13 +16,18 @@ class Cell extends Component {
         if (this.props.parent.state.sectionStart == null){
             this.setState({
                 color:"#00FF00",
-                target: "#highlightMenu",
-                toggle: "modal"
+                target: "",
+                toggle: ""
             });
             this.props.parent.setState({sectionStart: this})
         }else{
-            this.setState({color:"#FF0000"});
             this.props.parent.setState({sectionEnd: this})
+
+            this.setState({
+                color:"#FF0000",
+                target: "#highlightUi",
+                toggle: "modal"
+            });
         }
     }
 
@@ -33,13 +35,13 @@ class Cell extends Component {
         return (
             <div
                 className="border"
-                data-toggle="modal"
-                data-target="#highlightMenu"
-                style={{height:"15px", backgroundColor: this.state.color}}
+                data-toggle={this.state.toggle}
+                data-target={this.state.target}
+                style={{height: "15px", backgroundColor: this.state.color}}
                 onClick={
                     this.cellFunction.bind(this)
                 }
-            ></div>
+            />
         );
     }
 }
