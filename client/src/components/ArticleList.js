@@ -8,7 +8,7 @@ const ArticleList = () =>  {
   useEffect(function() {
     async function getArticles() {
       try {
-        const response = await axios.get("/api/movies");
+        const response = await axios.get("/api/timePeriods");
         return response.data;
       } catch(error) {
         console.log('error', error);
