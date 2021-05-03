@@ -52,8 +52,46 @@ function ClearTaskSelect(props){
 function TaskParameters(){
     return(
         <>
-            <div className="modal-body">
-                <label></label>
+            <div className="modal-body container">
+                <div className="row">
+                    <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                        <div className="col-sm border-right">
+                            <label>Select Task</label>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                    <div className="input-group-text">
+                                        <label className="btn btn-secondary active">
+                                            <input type="radio" name="options" id="option1" checked> Active</input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="dropdown">
+                                    <button className="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Tasks
+                                    </button>
+                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a className="dropdown-item" href="#">Study</a>
+                                        <a className="dropdown-item" href="#">Sleep</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-sm">
+                            <label>Create Task</label>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                    <div className="input-group-text">
+                                        <label className="btn btn-secondary">
+                                            <input type="radio" name="options" id="option1" checked> Active </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <input type="text" className="form-control" aria-label="Text input with radio button"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className="modal-footer modal-dialog-centered container">
                 <button className="btn btn-block btn-success col-sm">Submit</button>
@@ -80,14 +118,14 @@ class HighlightUI extends Component {
                      aria-labelledby="task setter"
                      aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content carousel slide" id="highlightUI">
+                        <div className="modal-content carousel slide" data-interval="false" id="highlightUI">
                             <ModalHeader period={"2:30am to 6:30pm"}/>
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
                                     <ClearTaskSelect parent={this.props.parent}/>
                                 </div>
                                 <div className="carousel-item">
-                                    <TaskParameters parent={this}/>
+                                    <TaskParameters parent={this.props.parent}/>
                                 </div>
                             </div>
                         </div>
