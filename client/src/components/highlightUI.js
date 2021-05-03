@@ -54,42 +54,11 @@ function TaskParameters(){
         <>
             <div className="modal-body container">
                 <div className="row">
-                    <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                        <div className="col-sm border-right">
-                            <label>Select Task</label>
-                            <div className="input-group">
-                                <div className="input-group-prepend">
-                                    <div className="input-group-text">
-                                        <label className="btn btn-secondary active">
-                                            <input type="radio" name="options" id="option1" checked> Active</input>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="dropdown">
-                                    <button className="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Tasks
-                                    </button>
-                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a className="dropdown-item" href="#">Study</a>
-                                        <a className="dropdown-item" href="#">Sleep</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-sm">
-                            <label>Create Task</label>
-                            <div className="input-group">
-                                <div className="input-group-prepend">
-                                    <div className="input-group-text">
-                                        <label className="btn btn-secondary">
-                                            <input type="radio" name="options" id="option1" checked> Active </input>
-                                        </label>
-                                    </div>
-                                </div>
-                                <input type="text" className="form-control" aria-label="Text input with radio button"/>
-                            </div>
-                        </div>
+                    <div className="col-sm border-right">
+                        <label>Select Task</label>
+                    </div>
+                    <div className="col-sm">
+                        <label>Create Task</label>
                     </div>
                 </div>
             </div>
