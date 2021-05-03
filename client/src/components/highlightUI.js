@@ -21,8 +21,6 @@ function ClearTaskSelect(props){
     function handleSubmit(event) {
         console.log(timePeriod)
         event.preventDefault();
-        if(!timePeriod.index || !timePeriod.date || !timePeriod.event ) return
-        console.log("LEGO")
         async function postTimePeriod() {
             try {
                 const response = await post('/api/timePeriod', timePeriod);
@@ -49,21 +47,34 @@ function ClearTaskSelect(props){
     )
 }
 
-function TaskParameters(){
+function TaskParameters(props){
+    const timePeriod = { index: props.parent.state.sectionEnd, date: props.parent.state.date, event: "Free"}
+    let history = useHistory();
+
+    function handleSubmit(event) {
+        console.log(timePeriod)
+        event.preventDefault();
+        async function postTimePeriod() {
+            try {
+                const response = await post('/api/timePeriod', timePeriod);
+                history.push(`/timePeriods/${response.data._id}`);
+            } catch(error) {
+            }
+        }
+        postTimePeriod();
+    }
+
+    function handleInput(event) {
+        timePeriod.event = event.target.value
+    }
+
     return(
         <>
             <div className="modal-body container">
-                <div className="row">
-                    <div className="col-sm border-right">
-                        <label>Select Task</label>
-                    </div>
-                    <div className="col-sm">
-                        <label>Create Task</label>
-                    </div>
+                <div className="input-group mb-3">
+                    <button className="btn btn-outline-success" onClick={handleSubmit}>Submit</button>
+                    <input type="text" placeholder="Task Name" onInput={handleInput} className="form-control"/>
                 </div>
-            </div>
-            <div className="modal-footer modal-dialog-centered container">
-                <button className="btn btn-block btn-success col-sm">Submit</button>
             </div>
         </>
     )

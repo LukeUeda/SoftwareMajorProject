@@ -15,7 +15,7 @@ class Day extends Component {
         return (
             <div style={{height:"720px"}}>
                 {[...Array(48)].map((value, index) => {
-                        return <Cell parent={this.props.parent} day={this.props.index} index={index}></Cell>;})}
+                        return <Cell parent={this} day={this.props.index} index={index}></Cell>;})}
             </div>
         );
     }

@@ -13,30 +13,32 @@ class Cell extends Component {
     };
 
     cellFunction(){
-        if (this.props.parent.state.sectionStart == null){
+        if (this.props.parent.props.parent.state.sectionStart == null){
             this.setState({
-                color:"#00FF00",
                 target: "",
                 toggle: ""
             });
-            this.props.parent.setState({sectionStart: this.props.index, selectionDay: this.props.day})
+            this.props.parent.props.parent.setState({sectionStart: this.props.index, selectionDay: this.props.day})
         }else{
-            if(this.props.parent.state.selectionDay != this.props.day) {
+            if(this.props.parent.props.parent.state.selectionDay != this.props.day) {
                 console.log("Nope")
                 this.setState({
                    toggle:"popover",
                 });
             }
             else{
-                this.props.parent.setState({sectionEnd: this.props.index})
+                this.props.parent.props.parent.setState({sectionEnd: this.props.index})
 
                 this.setState({
-                    color:"#FF0000",
                     target:"#highlightUi",
                     toggle:"modal"
                 });
             }
         }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
     }
 
     render() {

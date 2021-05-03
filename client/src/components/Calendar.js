@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import Loader from "./Loader";
 import Day from "./Day.js";
 import HighlightUI from "./highlightUI.js";
-import TimePeriodAdd from "./TimePeriodAdd.js";
+import axios from "axios";
 
 class Calendar extends Component {
 
@@ -15,8 +15,25 @@ class Calendar extends Component {
             sectionEnd: null,
             selectionEvent: null,
             submit: false,
+            cells: [],
+            date: "03042021",
         };
     };
+
+    componentDidMount() {
+        async function getCells(date) {
+            try {
+                const response = await axios.get("/api/timePeriods/date/"+date);
+                return response.data;
+            } catch(error) {
+                console.log('error', error);
+            }
+        }
+        getCells(this.state.date).then(timePeriods => {
+            console.log('timePeriods', timePeriods.data);
+            this.state.cells = timePeriods.data;
+        });
+    }
 
     render() {
         return(

@@ -85,8 +85,28 @@ getTimePeriods = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+getTimePeriodsByDate = async (req, res) => {
+    await TimePeriod.find({date: req.params.date}, (err, timePeriods) => {
+        if(err){
+            return res.status(400).json({ success: false, error: err })
+        }
+        return res.status(200).json({ success: true, data: timePeriods})
+    }).catch(err => console.log(err))
+}
+
+getTimePeriodsByTask = async (req, res) => {
+    await TimePeriod.find({event: req.params.event}, (err, timePeriods) => {
+        if(err){
+            return res.status(400).json({ success: false, error: err })
+        }
+        return res.status(200).json({ success: true, data: timePeriods})
+    }).catch(err => console.log(err))
+}
+
 module.exports = {
     createTimePeriod,
     updateTimePeriod,
     getTimePeriods,
+    getTimePeriodsByDate,
+    getTimePeriodsByTask,
 }
