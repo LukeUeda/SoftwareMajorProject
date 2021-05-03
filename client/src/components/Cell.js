@@ -7,8 +7,8 @@ class Cell extends Component {
         super(props);
         this.state = {
             color: "#FFFFFF",
-            start: '9:30',
-            end: '13:00'
+            start: props.index/2,
+            end: (props.index + 1)/2
         };
     };
 

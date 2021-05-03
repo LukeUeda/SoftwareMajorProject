@@ -1,12 +1,13 @@
-import React, {Component, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 // import {Link} from 'react-router-dom';
 import Day from "./Day.js";
-import selectUi from "./selectUi";
+import SelectUi from "./selectUi";
 import {Button, Modal} from "react-bootstrap";
 
 
 function Calendar(){
-    const [state, setState] = useState({selectionStart: null, selectionEnd: null, modalState:false});
+    const [state, setState] = useState({selectionStart: null, selectionEnd: null});
+    const [modalShow, setModalShow] = useState(false);
 
     const select = (cell) => {
         if(!state.selectionStart){
@@ -17,9 +18,9 @@ function Calendar(){
         }else{
             setState({
                 ...state,
-                modalState: true,
                 selectionEnd: cell.state.end
             })
+            setModalShow(true)
         }
         console.log(state);
     }
@@ -38,21 +39,12 @@ function Calendar(){
                     })}
                 </div>
             </div>
-            <selectUi modalState={state.modalState}/>
-            <Modal show={state.modalState}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" >
-                        Close
-                    </Button>
-                    <Button variant="primary" >
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <SelectUi modalState={modalShow}
+                      onHide={() => {
+                          setModalShow(false)
+                          setState({selectionStart: null, selectionEnd: null})
+                      }}
+                      selection={state}/>
         </>
     );
 }

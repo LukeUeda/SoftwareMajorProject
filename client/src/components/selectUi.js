@@ -1,109 +1,64 @@
-import React, {Component} from 'react';
-import {post} from "axios";
-import {useHistory} from "react-router-dom";
+import React, {useEffect} from 'react';
+import {Button, Form, InputGroup, Modal} from "react-bootstrap";
+import ModalContext from "react-bootstrap/ModalContext";
 
 // import {Link} from 'react-router-dom';
 
-function ModalHeader(props){
+function SelectUi(props){
+    useEffect(() => {
+        console.log("component updated");
+    });
+
     return (
-        <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">Highlighted Section: {props.period}</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    )
-}
-
-function ClearTaskSelect(props){
-    const timePeriod = { index: props.parent.state.sectionEnd, date: props.parent.state.selectionDay, event: "Free"}
-    let history = useHistory();
-
-    function handleSubmit(event) {
-        console.log(timePeriod)
-        event.preventDefault();
-        async function postTimePeriod() {
-            try {
-                const response = await post('/api/timePeriod', timePeriod);
-                history.push(`/timePeriods/${response.data._id}`);
-            } catch(error) {
-            }
-        }
-        postTimePeriod();
-    }
-
-    return(
         <>
-            <div className="modal-body">
-                <label>Select Action</label>
-            </div>
-            <div className="modal-footer modal-dialog-centered container">
-                <button className="btn btn-block btn-dark col-sm"
-                    onClick={handleSubmit}>Clear</button>
-                <button className="btn btn-block btn-primary col-sm"
-                        data-slide="next"
-                        href="#highlightUI">Add Task</button>
-            </div>
+            <Modal show={props.modalState} centered>
+                <Modal.Header closeButton onClick={props.onHide}>
+                    <Modal.Title>Add Task</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Checkbox aria-label="Checkbox for following text input" />
+                        </InputGroup.Prepend>
+
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id="basic-addon1">Change Time Start</InputGroup.Text>
+                        </InputGroup.Prepend>
+
+                        <Form.Control
+                            placeholder={props.selection.selectionStart}
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                        />
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Checkbox aria-label="Checkbox for following text input" />
+                        </InputGroup.Prepend>
+
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id="basic-addon1">Change Time End</InputGroup.Text>
+                        </InputGroup.Prepend>
+
+                        <Form.Control
+                            placeholder={props.selection.selectionEnd}
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                        />
+                    </InputGroup>
+                    <Form.Control type="taskName" placeholder="Enter Task Name" />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={props.onHide}>
+                        Close
+                    </Button>
+                    <Button variant="primary" >
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
-    )
-}
-
-function TaskParameters(props){
-    const timePeriod = { index: props.parent.state.sectionEnd, date: props.parent.state.date, event: "Free"}
-    let history = useHistory();
-
-    function handleSubmit(event) {
-        console.log(timePeriod)
-        event.preventDefault();
-        async function postTimePeriod() {
-            try {
-                const response = await post('/api/timePeriod', timePeriod);
-                history.push(`/timePeriods/${response.data._id}`);
-            } catch(error) {
-            }
-        }
-        postTimePeriod();
-    }
-
-    function handleInput(event) {
-        timePeriod.event = event.target.value
-    }
-
-    return(
-        <>
-            <div className="modal-body container">
-                <div className="input-group mb-3">
-                    <button className="btn btn-outline-success" onClick={handleSubmit}>Submit</button>
-                    <input type="text" placeholder="Task Name" onInput={handleInput} className="form-control"/>
-                </div>
-            </div>
-        </>
-    )
-}
-
-function selectUi(props){
-    return (
-        <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div className="modal-body">
-                        ...
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     );
 }
 
-export default selectUi;
+export default SelectUi;
