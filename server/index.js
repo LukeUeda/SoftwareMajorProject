@@ -4,7 +4,6 @@ const cors = require('cors')
 
 const db = require('./db')
 
-const timeRouter = require('./routes/time-router')
 const taskRouter = require('./routes/task-router')
 
 const app = express()
@@ -20,7 +19,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.use('/api', timeRouter)
 app.use('/api', taskRouter)
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))

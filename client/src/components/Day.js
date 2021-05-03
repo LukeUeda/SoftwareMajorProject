@@ -8,6 +8,8 @@ class Day extends Component {
         super(props);
         this.state = {
             index: props.index,
+            start: '',
+            end:  '',
         };
     };
 
@@ -15,7 +17,7 @@ class Day extends Component {
         return (
             <div style={{height:"720px"}}>
                 {[...Array(48)].map((value, index) => {
-                        return <Cell parent={this} day={this.props.index} index={index}></Cell>;})}
+                        return <Cell cellFunc={this.props.cellFunc} index={index}/>;})}
             </div>
         );
     }
