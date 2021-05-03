@@ -7,7 +7,7 @@ import {Button, Modal} from "react-bootstrap";
 
 function Calendar(){
     const [state, setState] = useState({selectionStart: null, selectionEnd: null});
-    const [modalShow, setModalShow] = useState(false);
+    const [selection, setSelection] = useState(false);
 
     const select = (cell) => {
         if(!state.selectionStart){
@@ -20,9 +20,8 @@ function Calendar(){
                 ...state,
                 selectionEnd: cell.state.end
             })
-            setModalShow(true)
+            setSelection(true)
         }
-        console.log(state);
     }
 
     return(
@@ -39,9 +38,9 @@ function Calendar(){
                     })}
                 </div>
             </div>
-            <SelectUi modalState={modalShow}
+            <SelectUi modalState={selection}
                       onHide={() => {
-                          setModalShow(false)
+                          setSelection(false)
                           setState({selectionStart: null, selectionEnd: null})
                       }}
                       selection={state}/>
