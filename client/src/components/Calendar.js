@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
+
 // import {Link} from 'react-router-dom';
 import Day from "./Day.js";
+import EditUi from "./editUi";
 import SelectUi from "./selectUi";
 import {Button, Modal} from "react-bootstrap";
 
@@ -10,7 +12,7 @@ function Calendar(){
     const [selection, setSelection] = useState(false);
 
     const select = (cell) => {
-        if(!state.selectionStart){
+        if(state.selectionStart === null){
             setState({
                 ...state,
                 selectionStart: cell.state.start
@@ -22,6 +24,7 @@ function Calendar(){
             })
             setSelection(true)
         }
+        console.log(selection);
     }
 
     return(
@@ -38,7 +41,7 @@ function Calendar(){
                     })}
                 </div>
             </div>
-            <SelectUi modalState={selection}
+            <EditUi modalState={selection}
                       onHide={() => {
                           setSelection(false)
                           setState({selectionStart: null, selectionEnd: null})
