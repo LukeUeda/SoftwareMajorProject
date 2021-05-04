@@ -8,7 +8,7 @@ class Cell extends Component {
         this.state = {
             color: "#FFFFFF",
             start: props.index/2,
-            end: (props.index + 1)/2
+            end: (props.index + 1)/2,
         };
     };
 
@@ -19,7 +19,6 @@ class Cell extends Component {
     render() {
         return (
             <div
-                className="border"
                 style={{height: "15px", backgroundColor: this.state.color}}
                 onClick={
                     this.cellFunction.bind(this)

@@ -32,7 +32,7 @@ function EditUi(props){
 
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger">
+                    <Button variant="danger" onClick={props.onHide}>
                         Cancel
                     </Button>
                     <Button variant="outline-dark" >

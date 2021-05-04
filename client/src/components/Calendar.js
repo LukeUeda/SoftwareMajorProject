@@ -24,7 +24,11 @@ function Calendar(){
             })
             setSelection(true)
         }
-        console.log(selection);
+    }
+
+    const addTask = (bounds, task) => {
+        console.log("Calender State:", state)
+        console.log("UI State:", bounds, task)
     }
 
     return(
@@ -41,11 +45,9 @@ function Calendar(){
                     })}
                 </div>
             </div>
-            <EditUi modalState={selection}
-                      onHide={() => {
-                          setSelection(false)
-                          setState({selectionStart: null, selectionEnd: null})
-                      }}
+            <SelectUi modalState={selection}
+                      onHide={() => {setSelection(false)}}
+                      submit={addTask}
                       selection={state}/>
         </>
     );

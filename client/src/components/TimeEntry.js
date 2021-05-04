@@ -8,7 +8,7 @@ function TimeEntry(props){
 
     const toggle = (val) => {
         setActive(!val)
-        setInput(props.placeholder)
+        setInput(props.placeholder);
     }
 
     return(
