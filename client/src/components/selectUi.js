@@ -8,7 +8,18 @@ function SelectUi(props){
     const initialBounds = {start: props.selection.selectionStart, end: props.selection.selectionEnd}
     const [bounds, setBounds] = useState(initialBounds);
     const [task, setTask] = useState('');
-    const [errMsg, setErrMsg] = useState('')
+    const [errMsgs, setErrMsgs] = useState({
+        varType: {
+            start: false,
+            end: false
+        },
+        inBounds: {
+            start: false,
+            end: false
+        },
+        correctOrder: false,
+        appropriateName: false,
+    })
 
     const selection = (title, value) => {
         if(value !== '') {
@@ -33,32 +44,40 @@ function SelectUi(props){
     }, [props.modalState])
 
     const validation = () => {
-        let msg=''
-        const correctVarType = !isNaN(bounds.end) && !isNaN(bounds.start);
-        const isInBounds = (bounds.end <= 24) && (bounds.start >= 0);
+        const VarTypeStart = !isNaN(bounds.start);
+        const VarTypeEnd = !isNaN(bounds.end);
+        const inBoundsStart = (bounds.start <= 24) && (bounds.start >= 0);
+        const inBoundsEnd = (bounds.end <= 24) && (bounds.end >= 0);
         const correctOrder = (bounds.end > bounds.start);
         const appropriateName = task != ""
-        const finalBool = correctVarType && isInBounds && correctOrder && appropriateName
+        const finalBool = VarTypeStart && VarTypeEnd && inBoundsStart && inBoundsEnd && correctOrder && appropriateName
 
-        if (!correctVarType){
-            msg += 'One of your times are not in the correct form (h.mm).<br>'
+        if(!appropriateName){
+            errMsgs.appropriateName = true;
         }
 
-            if (!isInBounds){
-                msg += 'One of your times are out of bounds.<br>'
-            }
-
-            if (!correctOrder){
-                msg += "You can't end earlier than you started!<br>"
-            }
-
-        if (!appropriateName){
-            msg += 'Please enter an acceptable task name.<br>'
+        if(!correctOrder){
+            errMsgs.correctOrder = true;
         }
 
-        console.log(bounds, task)
+        if(!VarTypeStart){
+            errMsgs.varType.start = true;
+        }
+
+        if(!VarTypeEnd){
+            errMsgs.varType.end = true;
+        }
+
+        if(!inBoundsStart){
+            errMsgs.inBounds.start = true;
+        }
+
+        if(!inBoundsEnd){
+            errMsgs.inBounds.end = true;
+        }
+
+        console.log(errMsgs)
         console.log(finalBool)
-        setErrMsg(msg)
         return (finalBool)
     }
 
@@ -69,18 +88,21 @@ function SelectUi(props){
                     <Modal.Title>Add Task</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>
-                        <TimeEntry title="Change Time Start" placeholder={props.selection.selectionStart} returnFunc={selection}/>
-                        <TimeEntry title="Change Time End" placeholder={props.selection.selectionEnd} returnFunc={selection}/>
-                        <Form.Control type="taskName"
-                                      placeholder="Enter Task Name"
-                                      onChange={(event) => {
-                                          setTask(event.target.value);
-                                          console.log(task)
-                                      }}
-                        />
-                    </div>
-                    <label variant="danger">{errMsg}</label>
+                    <TimeEntry title="Change Time Start" placeholder={props.selection.selectionStart} returnFunc={selection}/>
+                    <label style={{display: errMsgs.varType.start ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</label>
+                    <label style={{display: errMsgs.inBounds.start ? 'block' : 'none' }}>Time out of bounds.</label>
+                    <TimeEntry title="Change Time End" placeholder={props.selection.selectionEnd} returnFunc={selection}/>
+                    <label style={{display: errMsgs.varType.end ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</label>
+                    <label style={{display: errMsgs.inBounds.end ? 'block' : 'none' }}>Time out of bounds.</label>
+                    <label style={{display: errMsgs.correctOrder ? 'block' : 'none' }}>You can't end earlier than you started!</label>
+                    <Form.Control type="taskName"
+                                  placeholder="Enter Task Name"
+                                  onChange={(event) => {
+                                      setTask(event.target.value);
+                                      console.log(task)
+                                  }}
+                    />
+                    <label style={{display: errMsgs.appropriateName ? 'block' : 'none' }}>Please enter an acceptable task name.</label>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={props.onHide}>
