@@ -48,34 +48,24 @@ function SelectUi(props){
         const VarTypeEnd = !isNaN(bounds.end);
         const inBoundsStart = (bounds.start <= 24) && (bounds.start >= 0);
         const inBoundsEnd = (bounds.end <= 24) && (bounds.end >= 0);
-        const correctOrder = (bounds.end > bounds.start);
+        const correctOrder = (parseFloat(bounds.end) > parseFloat(bounds.start));
         const appropriateName = task != ""
         const finalBool = VarTypeStart && VarTypeEnd && inBoundsStart && inBoundsEnd && correctOrder && appropriateName
 
-        if(!appropriateName){
-            errMsgs.appropriateName = true;
-        }
+        setErrMsgs({
+            varType: {
+                start: !VarTypeStart,
+                end: !VarTypeEnd
+            },
+            inBounds: {
+                start: !inBoundsStart,
+                end: !inBoundsEnd
+            },
+            correctOrder: !correctOrder,
+            appropriateName: !appropriateName
+        })
 
-        if(!correctOrder){
-            errMsgs.correctOrder = true;
-        }
-
-        if(!VarTypeStart){
-            errMsgs.varType.start = true;
-        }
-
-        if(!VarTypeEnd){
-            errMsgs.varType.end = true;
-        }
-
-        if(!inBoundsStart){
-            errMsgs.inBounds.start = true;
-        }
-
-        if(!inBoundsEnd){
-            errMsgs.inBounds.end = true;
-        }
-
+        console.log(bounds)
         console.log(errMsgs)
         console.log(finalBool)
         return (finalBool)
@@ -89,20 +79,22 @@ function SelectUi(props){
                 </Modal.Header>
                 <Modal.Body>
                     <TimeEntry title="Change Time Start" placeholder={props.selection.selectionStart} returnFunc={selection}/>
-                    <label style={{display: errMsgs.varType.start ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</label>
-                    <label style={{display: errMsgs.inBounds.start ? 'block' : 'none' }}>Time out of bounds.</label>
+                    <Alert variant="danger" style={{display: errMsgs.varType.start ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</Alert>
+                    <Alert variant="danger" style={{display: errMsgs.inBounds.start ? 'block' : 'none' }}>Time out of bounds.</Alert>
                     <TimeEntry title="Change Time End" placeholder={props.selection.selectionEnd} returnFunc={selection}/>
-                    <label style={{display: errMsgs.varType.end ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</label>
-                    <label style={{display: errMsgs.inBounds.end ? 'block' : 'none' }}>Time out of bounds.</label>
-                    <label style={{display: errMsgs.correctOrder ? 'block' : 'none' }}>You can't end earlier than you started!</label>
+                    <Alert variant="danger" style={{display: errMsgs.varType.end ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</Alert>
+                    <Alert variant="danger" style={{display: errMsgs.inBounds.end ? 'block' : 'none' }}>Time out of bounds.</Alert>
+                    <Alert variant="danger" style={{display: errMsgs.correctOrder ? 'block' : 'none' }}>You can't end earlier than you started!</Alert>
                     <Form.Control type="taskName"
-                                  placeholder="Enter Task Name"
+                                  placeholder="Enter Task Name (Max 20 characters)"
+                                  value={task}
                                   onChange={(event) => {
-                                      setTask(event.target.value);
+                                      if(event.target.value.length < 20){setTask(event.target.value);}
                                       console.log(task)
                                   }}
                     />
-                    <label style={{display: errMsgs.appropriateName ? 'block' : 'none' }}>Please enter an acceptable task name.</label>
+                    <label></label>
+                    <Alert variant="danger" style={{display: errMsgs.appropriateName ? 'block' : 'none' }}>Please enter an acceptable task name.</Alert>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={props.onHide}>
