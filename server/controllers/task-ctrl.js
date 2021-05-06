@@ -81,8 +81,45 @@ getTasks = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+getTasksByDate = async (req, res) => {
+    await Task.find({date: req.params.date}, (err,tasks) => {
+        if(err){
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!tasks.length){
+            return res
+                .status(404)
+                .json({
+                    success: false, error: `Tasks not found!`
+                })
+        }
+        return res.status(200).json({ success: true, data: tasks })
+    }).catch(err => console.log(err))
+}
+
+getTasksByIntersectingTasks = async (req, res) => {
+    const body = req.body
+
+
+
+    await Task.find({date: req.params.date}, (err,tasks) => {
+        if(err){
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!tasks.length){
+            return res
+                .status(404)
+                .json({
+                    success: false, error: `Tasks not found!`
+                })
+        }
+        return res.status(200).json({ success: true, data: tasks })
+    }).catch(err => console.log(err))
+}
+
 module.exports = {
     createTask,
     updateTask,
     getTasks,
+    getTasksByDate,
 }

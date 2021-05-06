@@ -24,7 +24,10 @@ function Menu(props){
                                 name="radio"
                                 value={radio.value}
                                 checked={radioValue === radio.value}
-                                onChange={(e) => setRadioValue(e.currentTarget.value)}
+                                onChange={(e) => {
+                                    setRadioValue(e.currentTarget.value);
+                                    props.updateFunc(e.currentTarget.value);
+                                }}
                             >
                                 {radio.name}
                             </ToggleButton>

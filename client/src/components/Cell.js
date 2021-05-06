@@ -1,31 +1,42 @@
-import React, {Component} from 'react';
-
+import React, {Component, useRef, useState} from 'react';
+import {Overlay, Tooltip} from "react-bootstrap";
+import indexToTime from "./indexToTime";
 // import {Link} from 'react-router-dom';
 
-class Cell extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            color: "#FFFFFF",
-            start: props.index/2,
-            end: (props.index + 1)/2,
-        };
-    };
+function Cell (props){
+    const [state, setState] = useState({
+        color: "#FFFFFF",
+        start: indexToTime(props.index, 30),
+        end: indexToTime(props.index + 1, 30),
+        day: props.par
+    });
+    const [pop, setPop] = useState(false);
+    const target = useRef(null);
 
-    cellFunction(){
-        this.props.cellFunc(this)
+    const cellFunction = () => {
+        /**
+         * Calls function from parent component.
+         */
+        props.cellFunc(state)
     }
 
-    render() {
-        return (
-            <div
-                style={{height: "15px", backgroundColor: this.state.color}}
-                onClick={
-                    this.cellFunction.bind(this)
-                }
+    return (
+        <>
+            <div style={{height: "15px", backgroundColor: state.color}}
+                 ref={target}
+                 onClick={cellFunction}
+                 onMouseEnter={() => {setPop(true)}}
+                 onMouseLeave={() => {setPop(false)}}
             />
-        );
-    }
+            <Overlay target={target.current} show={pop} placement="right" transition={false}>
+                {(props) => (
+                    <Tooltip id="overlay-example" {...props}>
+                        {state.start}
+                    </Tooltip>
+                )}
+            </Overlay>
+        </>
+    );
 }
 
 export default Cell;

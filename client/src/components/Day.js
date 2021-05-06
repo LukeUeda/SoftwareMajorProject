@@ -17,7 +17,7 @@ class Day extends Component {
         return (
             <div style={{height:"720px"}}>
                 {[...Array(48)].map((value, index) => {
-                        return <Cell cellFunc={this.props.cellFunc} index={index}/>;})}
+                        return <Cell cellFunc={this.props.cellFunc} index={index} par={this.state.index}/>;})}
             </div>
         );
     }
