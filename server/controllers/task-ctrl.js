@@ -24,10 +24,7 @@ createTask = (req, res) => {
             id: task._id,
             message: 'time period created!'
         })
-    })
-
-        //Also Error Handling.
-        .catch(error => {
+    }).catch(error => {        //Also Error Handling.
             return res.status(400).json({
                 error, message: 'time period not created'
             })
