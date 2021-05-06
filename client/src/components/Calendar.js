@@ -4,11 +4,12 @@ import React, {useEffect, useState} from 'react';
 import Day from "./Day.js";
 import EditUi from "./editUi";
 import SelectUi from "./selectUi";
-import {Button, Modal} from "react-bootstrap";
+import Menu from "./Menu";
 
 
 function Calendar(){
-    const [state, setState] = useState({selectionStart: null, selectionEnd: null});
+    const initialState ={selectionStart: null, selectionEnd: null}
+    const [state, setState] = useState(initialState);
     const [selection, setSelection] = useState(false);
 
     const select = (cell) => {
@@ -32,11 +33,13 @@ function Calendar(){
     }
 
     return(
-        <>
+        <div className="bg-light">
+            <Menu></Menu>
+            <br/>
             <div className="container">
                 <div className="row">
                     {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(name => {
-                        return <div className="col-lg border">{name}</div>
+                        return <div className="col-lg border bg-dark text-light">{name}</div>
                     })}
                 </div>
                 <div className="row">
@@ -46,10 +49,13 @@ function Calendar(){
                 </div>
             </div>
             <SelectUi modalState={selection}
-                      onHide={() => {setSelection(false)}}
+                      onHide={() => {
+                          setState(initialState)
+                          setSelection(false)
+                      }}
                       submit={addTask}
                       selection={state}/>
-        </>
+        </div>
     );
 }
 

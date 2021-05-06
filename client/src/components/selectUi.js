@@ -58,10 +58,10 @@ function SelectUi(props){
                 end: !VarTypeEnd
             },
             inBounds: {
-                start: !inBoundsStart,
-                end: !inBoundsEnd
+                start: !inBoundsStart && VarTypeStart,
+                end: !inBoundsEnd && VarTypeEnd
             },
-            correctOrder: !correctOrder,
+            correctOrder: !correctOrder && VarTypeEnd && VarTypeStart,
             appropriateName: !appropriateName
         })
 
@@ -71,10 +71,17 @@ function SelectUi(props){
         return (finalBool)
     }
 
+    const closeFunc = () =>{
+        props.onHide()
+        setBounds(initialBounds)
+        setTask('')
+    }
+
+
     return (
         <>
             <Modal show={props.modalState} centered>
-                <Modal.Header closeButton onClick={props.onHide}>
+                <Modal.Header closeButton onClick={closeFunc}>
                     <Modal.Title>Add Task</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -97,14 +104,14 @@ function SelectUi(props){
                     <Alert variant="danger" style={{display: errMsgs.appropriateName ? 'block' : 'none' }}>Please enter an acceptable task name.</Alert>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" onClick={props.onHide}>
+                    <Button variant="danger" onClick={closeFunc}>
                         Close
                     </Button>
                     <Button variant="success"
                             onClick={() => {
                                 if(validation()){
                                     props.submit(bounds, task);
-                                    props.onHide();
+                                    closeFunc()
                                 }
                             }}>
                         Submit
