@@ -97,12 +97,24 @@ getTasksByDate = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
-getTasksByIntersectingTasks = async (req, res) => {
+getTasksByIntersectingTimes = async (req, res) => {
     const body = req.body
 
+    const start = body.start
+    const end = body.end
 
-
-    await Task.find({date: req.params.date}, (err,tasks) => {
+    await Task.find({
+        $or: [
+            {$and: [
+                {start: {$lt : end}},
+                {start: {$gt: start}}
+            ]},
+            {$and: [
+                {end: {$lt : end}},
+                {end: {$gt: start}}
+            ]}
+        ]
+    }, (err,tasks) => {
         if(err){
             return res.status(400).json({ success: false, error: err })
         }
@@ -122,4 +134,5 @@ module.exports = {
     updateTask,
     getTasks,
     getTasksByDate,
+    getTasksByIntersectingTimes
 }
