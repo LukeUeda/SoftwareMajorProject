@@ -19,17 +19,18 @@ function Day(props){
     const [cellValues, setCellValues] = useState(initialCellValues);
 
     const update = () => {
-        console.log("------------------------- " + state.index + " -------------------------")
         Object.entries(props.data).map((key, value) => {
-            console.log("Entry: " + key[1]["start"])
-            console.log("Index: " + state.index + " Start: "  + DBtoIndex(props.data[key[0]]["start"]) + " End: "  + DBtoIndex(props.data[key[0]]["end"]));
             for(let x = DBtoIndex(props.data[key[0]]["start"]); x < DBtoIndex(props.data[key[0]]["end"]); x ++){
-                initialCellValues[x] = props.data[key[0]]["task"];
+                cellValues[x] = props.data[key[0]]["task"]
             }
+            console.log("------------------------- " + state.index + " -------------------------")
+            console.log(cellValues)
         })
     }
 
-    update()
+    useEffect(() => {
+        update()
+    })
 
     return (
         <div style={{height:"720px"}}>
