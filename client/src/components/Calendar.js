@@ -14,35 +14,26 @@ function Calendar(props){
     const [selection, setSelection] = useState(false);
     const [mode, setMode] = useState('Add');
     const [cellData, setCellData] = useState({
-        0: [{
-            "_id": "60962ee2c250a56815f16c87",
-            "date": "0",
-            "start": "00.00",
-            "end": "05.00",
-            "task": "Meditating",
-            "__v": 0
-        },{
-            "_id": "60962ee2c250a56815f16c87",
-            "date": "0",
-            "start": "04.30",
-            "end": "19.00",
-            "task": "Sleep",
-            "__v": 0
-        }],
+        0: [{}],
         1: [{}],
         2: [{}],
         3: [{}],
         4: [{}],
-        5: [{
-            "_id": "60962ee2c250a56815f16c87",
-            "date": "0",
-            "start": "21.00",
-            "end": "24.00",
-            "task": "EATING",
-            "__v": 0
-        }],
+        5: [{}],
         6: [{}]
     })
+
+    useEffect(() => {
+        for(let x = 0; x < 7; x++){
+            getTasksByDate(x).then(response => {
+                setCellData( {
+                    ...cellData,
+                    [x]:response.data
+                })
+            })
+        }
+    }, [])
+
 
     const select = (cell) => {
         /**
@@ -83,7 +74,10 @@ function Calendar(props){
 
         postTask(bounds, task, state.day)
         getTasksByDate(state.day).then(response => {
-            cellData[state.day] = response.data
+            setCellData({
+                ...cellData,
+                [state.day] : response.data
+            })
             console.log(cellData[state.day])
         })
     }
@@ -119,7 +113,6 @@ function Calendar(props){
                 </div>
                 <div className="row">
                     {Object.keys(cellData).map((key,index) => {
-                        console.log(cellData[key][0])
                         return <div className="col-lg border m-0 p-0"><Day cellFunc={select} index={index} data={cellData[key]}/></div>
                         }
                     )}

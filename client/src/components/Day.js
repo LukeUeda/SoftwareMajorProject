@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 // import {Link} from 'react-router-dom';
 import Cell from "./Cell";
-import {get} from "axios";
 import {DBtoIndex} from "./indexToTime";
 
 function Day(props){
@@ -20,18 +19,20 @@ function Day(props){
 
     const update = () => {
         Object.entries(props.data).map((key, value) => {
-            for(let x = DBtoIndex(props.data[key[0]]["start"]); x < DBtoIndex(props.data[key[0]]["end"]); x ++){
-                cellValues[x] = props.data[key[0]]["task"]
+            for(let x = DBtoIndex(props.data[key[0]]["start"]); x < DBtoIndex(props.data[key[0]]["end"]); x ++) {
+                (async function(){})().then(setCellValues({
+                    ...cellValues,
+                    [x]: props.data[key[0]]["task"]
+                })
+                )
             }
-            console.log("------------------------- " + state.index + " -------------------------")
-            console.log(cellValues)
         })
     }
 
     useEffect(() => {
         update()
-    })
-
+        console.log(props.index + " Day Data: " + JSON.stringify(cellValues))
+    },[props.data])
     return (
         <div style={{height:"720px"}}>
             {[...Array(48)].map((value, index) => {

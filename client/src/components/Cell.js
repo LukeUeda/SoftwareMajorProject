@@ -1,4 +1,4 @@
-import React, {Component, useRef, useState} from 'react';
+import React, {Component, useEffect, useRef, useState} from 'react';
 import {Overlay, Tooltip} from "react-bootstrap";
 import {indexToTime} from "./indexToTime";
 // import {Link} from 'react-router-dom';
@@ -19,6 +19,10 @@ function Cell (props){
          */
         props.cellFunc(state)
     }
+
+    useEffect(() => {
+        console.log("Cell Updated")
+    },[])
 
     return (
         <>
