@@ -8,6 +8,7 @@ router.post('/task', Task.createTask);
 router.put('/task/id/:id', Task.updateTask);
 router.get('/tasks', Task.getTasks);
 router.get('/tasks/date/:date', Task.getTasksByDate);
-router.get('/tasks/period/:start/:stop', Task.getTasksByIntersectingTimes);
+router.get('/tasks/period/:date/:start/:end', Task.getTasksByIntersectingTimes);
+router.delete('/task/delete/:id', Task.deleteTask);
 
 module.exports = router

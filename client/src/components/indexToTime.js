@@ -4,7 +4,7 @@ function indexToTime(cell, increment){
     const hour = (cell - remainder) / (60/increment);
     const minutes = remainder * increment;
 
-    const final = hour.toString() + ":" + pad(minutes.toString(), 2);
+    const final = pad(hour.toString(), 2) + ":" + pad(minutes.toString(), 2);
 
     return final;
 }
@@ -15,4 +15,14 @@ function pad(n, width, z) {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-export default indexToTime
+function timeToDB(time){
+    let timeList = time.split(':');
+    timeList = timeList[0] + '.' + timeList[1];
+    timeList = parseFloat(timeList);
+    return timeList;
+}
+
+export {
+    indexToTime,
+    timeToDB
+}

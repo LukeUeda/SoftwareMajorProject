@@ -1,26 +1,30 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 // import {Link} from 'react-router-dom';
 import Cell from "./Cell";
+import {get} from "axios";
 
-class Day extends Component {
+function Day(props){
+    const [state, setState] = useState({
+        index: props.index,
+        start: '',
+        end:  '',
+    })
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            index: props.index,
-            start: '',
-            end:  '',
-        };
-    };
-
-    render() {
-        return (
-            <div style={{height:"720px"}}>
-                {[...Array(48)].map((value, index) => {
-                        return <Cell cellFunc={this.props.cellFunc} index={index} par={this.state.index}/>;})}
-            </div>
-        );
+    const getData = async () => {
+        try {
+            const response = await get(`/api/tasks/date/${state.index}/`);
+            console.log(response.data);
+        } catch (error) {
+        console.log('error', error);
+        }
     }
+
+    return (
+        <div style={{height:"720px"}}>
+            {[...Array(48)].map((value, index) => {
+                    return <Cell cellFunc={props.cellFunc} index={index} par={state.index}/>;})}
+        </div>
+    );
 }
 
 export default Day;

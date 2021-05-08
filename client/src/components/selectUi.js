@@ -44,11 +44,29 @@ function SelectUi(props){
     }, [props.modalState])
 
     const validation = () => {
-        const VarTypeStart = !isNaN(bounds.start);
-        const VarTypeEnd = !isNaN(bounds.end);
-        const inBoundsStart = (bounds.start <= 24) && (bounds.start >= 0);
-        const inBoundsEnd = (bounds.end <= 24) && (bounds.end >= 0);
-        const correctOrder = (parseFloat(bounds.end) > parseFloat(bounds.start));
+        const startList = bounds.start.split(':');
+        const endList = bounds.end.split(':');
+
+        console.log(endList, startList)
+
+        const VarTypeStart =
+            startList.length === 2 &&
+            !isNaN(startList[0]) &&
+            !isNaN(startList[1]);
+
+        const VarTypeEnd =
+            endList.length === 2 &&
+            !isNaN(endList[0]) &&
+            !isNaN(endList[1]);
+
+        const startVal = parseInt(startList[0]) + parseInt(startList[1]) * 0.01
+        const endVal = parseInt(endList[0]) + parseInt(endList[1]) * 0.01
+
+        const inBoundsStart = (startVal <= 24) && (startVal >= 0);
+        const inBoundsEnd = (endVal <= 24) && (endVal >= 0);
+
+        const correctOrder = (endVal > startVal);
+
         const appropriateName = task != ""
         const finalBool = VarTypeStart && VarTypeEnd && inBoundsStart && inBoundsEnd && correctOrder && appropriateName
 

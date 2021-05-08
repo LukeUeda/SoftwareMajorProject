@@ -2,7 +2,7 @@ const Task = require('../models/task-model')
 
 createTask = (req, res) => {
     const body = req.body
-
+    console.log("Body:" + body)
     //Error Handling.
     if(!body) {
         return res.status(400).json({
@@ -81,6 +81,15 @@ getTasks = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+deleteTask = async (req, res) => {
+    const body = req.body
+    await Task.deleteOne({id: body.id}, (err) => {
+        if(err){
+            return res.status(400).json({ success: false, error: err })
+        }
+    })
+}
+
 getTasksByDate = async (req, res) => {
     await Task.find({date: req.params.date}, (err,tasks) => {
         if(err){
@@ -98,32 +107,29 @@ getTasksByDate = async (req, res) => {
 }
 
 getTasksByIntersectingTimes = async (req, res) => {
-    const body = req.body
+    const date = req.params.date
 
-    const start = body.start
-    const end = body.end
+    const start = req.params.start
+    const end = req.params.end
 
-    await Task.find({
-        $or: [
-            {$and: [
-                {start: {$lt : end}},
-                {start: {$gt: start}}
+    await Task.find({$and: [
+            {$or: [
+                {$and: [
+                    {start: {$lt : end}},
+                    {start: {$gt: start}}
+                ]},
+                {$and: [
+                    {end: {$lt : end}},
+                    {end: {$gt: start}}
+                ]}
             ]},
-            {$and: [
-                {end: {$lt : end}},
-                {end: {$gt: start}}
-            ]}
-        ]
-    }, (err,tasks) => {
+            {
+                date: date
+            }
+        ]}
+    , (err,tasks) => {
         if(err){
             return res.status(400).json({ success: false, error: err })
-        }
-        if (!tasks.length){
-            return res
-                .status(404)
-                .json({
-                    success: false, error: `Tasks not found!`
-                })
         }
         return res.status(200).json({ success: true, data: tasks })
     }).catch(err => console.log(err))
@@ -134,5 +140,6 @@ module.exports = {
     updateTask,
     getTasks,
     getTasksByDate,
-    getTasksByIntersectingTimes
+    getTasksByIntersectingTimes,
+    deleteTask
 }

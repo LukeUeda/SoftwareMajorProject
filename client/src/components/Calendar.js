@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { post } from 'axios';
+import axios,{post, get} from 'axios';
 
 // import {Link} from 'react-router-dom';
 import Day from "./Day.js";
 import EditUi from "./editUi";
 import SelectUi from "./selectUi";
 import Menu from "./Menu";
-
+import {timeToDB} from "./indexToTime";
 
 function Calendar(props){
     const initialState ={selectionStart: null, selectionEnd: null, day: null}
@@ -25,10 +25,10 @@ function Calendar(props){
                 setState({
                     ...state,
                     selectionStart: cell.start,
-                    day: cell.par
+                    day: cell.day
                 })
                 cell.color = "#000000"
-            }else if(state.day === cell.par){
+            }else if(state.day === cell.day){
                 setState({
                     ...state,
                     selectionEnd: cell.end
@@ -36,6 +36,32 @@ function Calendar(props){
                 setSelection(true)
             }
         }
+    }
+
+    async function postTask(bounds, task) {
+        try {
+            const response = await post('/api/task', {
+                date: state.day,
+                start: timeToDB(bounds.start),
+                end: timeToDB(bounds.end),
+                task: task
+            });
+        } catch(error) {
+            console.log('error', error);
+        }
+    }
+
+    async function getTasksByTimePeriod(date, timePeriod) {
+        try {
+            const response = await get(`/api/tasks/period/${date}/${timePeriod.start}/${timePeriod.end}`);
+            console.log(response.data);
+        } catch(error) {
+            console.log('error', error);
+        }
+    }
+
+    async function deleteTask(id){
+        await axios.delete(`/api/task/delete/${id}`)
     }
 
     const addTask = (bounds, task) => {
@@ -47,19 +73,11 @@ function Calendar(props){
          */
         console.log("Calender State:", state)
         console.log("UI State:", bounds, task)
-        async function postArticle() {
-            try {
-                const response = await post('/api/task', {
-                    date: state.day,
-                    start: bounds.start,
-                    end: bounds.end,
-                    task: task
-                });
-            } catch(error) {
-                console.log('error', error);
-            }
-        }
-        postArticle();
+
+        getTasksByTimePeriod(state.day, bounds);
+        //postTask(bounds, task);
+        //deleteTask(yeet);
+
     }
 
     const switchMode = (num) => {
