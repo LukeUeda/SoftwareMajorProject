@@ -81,9 +81,11 @@ function Calendar(props){
         //deleteTask("6095d8aa8e7f93e90d6938d9");
 
 
-        postTask(bounds, task, state.day);
-        cellData[state.day] = getTasksByDate(state.day)[[promis]]
-        console.log(cellData[state.day])
+        postTask(bounds, task, state.day)
+        getTasksByDate(state.day).then(response => {
+            cellData[state.day] = response.data
+            console.log(cellData[state.day])
+        })
     }
 
     const switchMode = (num) => {
