@@ -15,14 +15,22 @@ function pad(n, width, z) {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
+function DBtoIndex(time){
+    let timeList = (`${time}`).split('.');
+    const hours = parseInt(timeList[0]) * 2;
+    const minutes = parseFloat(timeList[1]) / 30
+
+    return hours + minutes;
+}
+
 function timeToDB(time){
     let timeList = time.split(':');
     timeList = timeList[0] + '.' + timeList[1];
-    timeList = parseFloat(timeList);
     return timeList;
 }
 
 export {
     indexToTime,
-    timeToDB
+    timeToDB,
+    DBtoIndex
 }

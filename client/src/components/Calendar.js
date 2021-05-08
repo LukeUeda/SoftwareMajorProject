@@ -6,13 +6,43 @@ import Day from "./Day.js";
 import EditUi from "./editUi";
 import SelectUi from "./selectUi";
 import Menu from "./Menu";
-import {timeToDB} from "./indexToTime";
+import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate} from "./databaseHandling";
 
 function Calendar(props){
     const initialState ={selectionStart: null, selectionEnd: null, day: null}
     const [state, setState] = useState(initialState);
     const [selection, setSelection] = useState(false);
     const [mode, setMode] = useState('Add');
+    const [cellData, setCellData] = useState({
+        0: [{
+            "_id": "60962ee2c250a56815f16c87",
+            "date": "0",
+            "start": "00.00",
+            "end": "05.00",
+            "task": "Meditating",
+            "__v": 0
+        },{
+            "_id": "60962ee2c250a56815f16c87",
+            "date": "0",
+            "start": "04.30",
+            "end": "19.00",
+            "task": "Sleep",
+            "__v": 0
+        }],
+        1: [{}],
+        2: [{}],
+        3: [{}],
+        4: [{}],
+        5: [{
+            "_id": "60962ee2c250a56815f16c87",
+            "date": "0",
+            "start": "21.00",
+            "end": "24.00",
+            "task": "EATING",
+            "__v": 0
+        }],
+        6: [{}]
+    })
 
     const select = (cell) => {
         /**
@@ -27,7 +57,6 @@ function Calendar(props){
                     selectionStart: cell.start,
                     day: cell.day
                 })
-                cell.color = "#000000"
             }else if(state.day === cell.day){
                 setState({
                     ...state,
@@ -36,32 +65,6 @@ function Calendar(props){
                 setSelection(true)
             }
         }
-    }
-
-    async function postTask(bounds, task) {
-        try {
-            const response = await post('/api/task', {
-                date: state.day,
-                start: timeToDB(bounds.start),
-                end: timeToDB(bounds.end),
-                task: task
-            });
-        } catch(error) {
-            console.log('error', error);
-        }
-    }
-
-    async function getTasksByTimePeriod(date, timePeriod) {
-        try {
-            const response = await get(`/api/tasks/period/${date}/${timePeriod.start}/${timePeriod.end}`);
-            console.log(response.data);
-        } catch(error) {
-            console.log('error', error);
-        }
-    }
-
-    async function deleteTask(id){
-        await axios.delete(`/api/task/delete/${id}`)
     }
 
     const addTask = (bounds, task) => {
@@ -75,9 +78,12 @@ function Calendar(props){
         console.log("UI State:", bounds, task)
 
         getTasksByTimePeriod(state.day, bounds);
-        //postTask(bounds, task);
-        //deleteTask(yeet);
+        //deleteTask("6095d8aa8e7f93e90d6938d9");
 
+
+        postTask(bounds, task, state.day);
+        cellData[state.day] = getTasksByDate(state.day)[[promis]]
+        console.log(cellData[state.day])
     }
 
     const switchMode = (num) => {
@@ -110,9 +116,11 @@ function Calendar(props){
                     })}
                 </div>
                 <div className="row">
-                    {[...Array(7)].map((value, index) => {
-                        return <div className="col-lg border m-0 p-0"><Day cellFunc={select} index={index}/></div>
-                    })}
+                    {Object.keys(cellData).map((key,index) => {
+                        console.log(cellData[key][0])
+                        return <div className="col-lg border m-0 p-0"><Day cellFunc={select} index={index} data={cellData[key]}/></div>
+                        }
+                    )}
                 </div>
             </div>
             <SelectUi modalState={selection}

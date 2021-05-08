@@ -27,11 +27,11 @@ function Cell (props){
                  onClick={cellFunction}
                  onMouseEnter={() => {setPop(true)}}
                  onMouseLeave={() => {setPop(false)}}
-            />
+            >{props.value}</div>
             <Overlay target={target.current} show={pop} placement="right" transition={false}>
                 {(props) => (
                     <Tooltip id="overlay-example" {...props}>
-                        {state.start}
+                        {state.start + " - " + state.end}
                     </Tooltip>
                 )}
             </Overlay>

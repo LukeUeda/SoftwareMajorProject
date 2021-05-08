@@ -95,13 +95,6 @@ getTasksByDate = async (req, res) => {
         if(err){
             return res.status(400).json({ success: false, error: err })
         }
-        if (!tasks.length){
-            return res
-                .status(404)
-                .json({
-                    success: false, error: `Tasks not found!`
-                })
-        }
         return res.status(200).json({ success: true, data: tasks })
     }).catch(err => console.log(err))
 }
@@ -121,6 +114,10 @@ getTasksByIntersectingTimes = async (req, res) => {
                 {$and: [
                     {end: {$lt : end}},
                     {end: {$gt: start}}
+                ]},
+                {$and: [
+                    {end: {$gt : end}},
+                    {start: {$lt: start}}
                 ]}
             ]},
             {
