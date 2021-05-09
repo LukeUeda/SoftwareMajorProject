@@ -38,7 +38,6 @@ function SelectUi(props){
     }
 
     useEffect(() => {
-        console.log("I am a modal an I have been toggled")
         bounds.start = props.selection.selectionStart
         bounds.end = props.selection.selectionEnd
     }, [props.modalState])
@@ -95,7 +94,6 @@ function SelectUi(props){
         setTask('')
     }
 
-
     return (
         <>
             <Modal show={props.modalState} centered>
@@ -115,7 +113,6 @@ function SelectUi(props){
                                   value={task}
                                   onChange={(event) => {
                                       if(event.target.value.length < 20){setTask(event.target.value);}
-                                      console.log(task)
                                   }}
                     />
                     <label></label>

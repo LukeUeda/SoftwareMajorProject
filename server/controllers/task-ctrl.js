@@ -82,12 +82,12 @@ getTasks = async (req, res) => {
 }
 
 deleteTask = async (req, res) => {
-    const body = req.body
-    await Task.deleteOne({id: body.id}, (err) => {
+    await Task.deleteOne({_id: req.params.id}, (err) => {
         if(err){
             return res.status(400).json({ success: false, error: err })
         }
-    })
+        return res.status(204);
+    }).catch(err => console.log(err))
 }
 
 getTasksByDate = async (req, res) => {

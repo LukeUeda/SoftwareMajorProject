@@ -25,8 +25,14 @@ async function getTasksByTimePeriod(date, timePeriod) {
 }
 
 async function deleteTask(id){
-    const response = await axios.delete(`/api/task/delete/${id}`)
-    console.log(response["data"]["id"])
+    console.log(`Deleting ${id}`)
+    try {
+        await axios.delete(`/api/task/delete/${id}`);
+        console.log(`Deleted ${id}`);
+    }
+    catch(error) {
+        console.log('error', error);
+    }
 }
 
 async function getTasksByDate(date) {

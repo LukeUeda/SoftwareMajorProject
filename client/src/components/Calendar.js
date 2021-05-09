@@ -34,7 +34,9 @@ function Calendar(props){
         }
     }, [])
 
-
+    useEffect(() => {
+        console.log(cellData);
+    }, [cellData])
 
     const select = (cell) => {
         /**
@@ -71,27 +73,24 @@ function Calendar(props){
 
         postTask(bounds, task, state.day).then(id => {
             getTasksByTimePeriod(state.day, bounds).then(response => {
-                for(const [key, val] of Object.entries(response["data"])) {
-                    console.log("GetTask: ",key, val["_id"]);
-                    if (val["_id"] !== id){
-                        deleteTask(val["_id"])
-                    }
-                }
+                console.log(response);
+                response.data.filter(t => t._id !== id).map(t => {
+                    deleteTask(t._id).then(
+                        () => {
+                            console.log(`Deleted ${t._id}`)
+                        }
+                    );
+                });
+                getTasksByDate(state.day).then(response => {
+                    setCellData(prevCellData => {return {
+                        ...prevCellData,
+                        [state.day] : response.data
+                    }})
+                })
             });
         })
 
-
         //deleteTask("6095d8aa8e7f93e90d6938d9");
-
-
-
-        getTasksByDate(state.day).then(response => {
-            setCellData(prevCellData => {return {
-                ...prevCellData,
-                [state.day] : response.data
-            }})
-            console.log(cellData[state.day])
-        })
 
         setState(initialState);
     }
