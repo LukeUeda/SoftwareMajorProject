@@ -41,30 +41,11 @@ updateTask = async (req, res) => {
         })
     }
 
-    Task.findOne({ _id: req.params.id }, (err, task) => {
+    Task.findOneAndUpdate(req.params._id, req.body, (err, task) => {
         if (err) {
-            return res.status(404).json({
-                err,
-                message: 'Time period not found!',
-            })
+            return res.status(400).json({ success: false, error: err })
         }
-        task.name = body.name
-        task.color = body.color
-
-        task.save().then(() => {
-            return res.status(200).json({
-                success: true,
-                id: task._id,
-                message: 'Time period updated!',
-            })
-        })
-            .catch(error => {
-                return res.status(404).json({
-                    error,
-                    message: 'Time period not updated!',
-                })
-            })
-    })
+    });
 }
 
 getTasks = async (req, res) => {
