@@ -6,7 +6,8 @@ import Day from "./Day.js";
 import EditUi from "./editUi";
 import SelectUi from "./selectUi";
 import Menu from "./Menu";
-import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate} from "./databaseHandling";
+import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate, updateTask} from "./databaseHandling";
+import {timeToDB} from "./indexToTime";
 
 function Calendar(props){
     const initialState ={selectionStart: null, selectionEnd: null, day: null}
@@ -75,11 +76,29 @@ function Calendar(props){
             getTasksByTimePeriod(state.day, bounds).then(response => {
                 console.log(response);
                 response.data.filter(t => t._id !== id).map(t => {
-                    deleteTask(t._id).then(
-                        () => {
-                            console.log(`Deleted ${t._id}`)
-                        }
-                    );
+                    if(parseFloat(t.start) > timeToDB(bounds.start) && parseFloat(t.end) < timeToDB(bounds.end)){
+                        deleteTask(t._id).then(
+                            () => {
+                                console.log(`Deleted ${t._id}`)
+                            }
+                        );
+                    }
+
+                    if(parseFloat(t.start) > timeToDB(bounds.start)){
+                        console.log("Start adjusted")
+                        updateTask({
+                            ...t,
+                            start: bounds.end
+                        })
+                    }
+
+                    if(parseFloat(t.end) < timeToDB(bounds.end)){
+                        console.log("End adjusted")
+                        updateTask({
+                            ...t,
+                            end: bounds.start
+                        })
+                    }
                 });
                 getTasksByDate(state.day).then(response => {
                     setCellData(prevCellData => {return {
@@ -90,7 +109,7 @@ function Calendar(props){
             });
         })
 
-        //deleteTask("6095d8aa8e7f93e90d6938d9");
+        //deleteTask("609793c8cd5e0625a6879527");
 
         setState(initialState);
     }

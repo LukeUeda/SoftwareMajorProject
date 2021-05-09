@@ -1,4 +1,4 @@
-import axios, {get, post} from "axios";
+import axios, {get, post, patch} from "axios";
 import {timeToDB} from "./indexToTime";
 
 async function postTask(bounds, task, day) {
@@ -44,9 +44,18 @@ async function getTasksByDate(date) {
     }
 }
 
+async function updateTask(task){
+    try {
+        await patch(`/api/task/id/${task._id}`, task);
+    } catch(error) {
+        console.log(error);
+    }
+}
+
 export {
     postTask,
     getTasksByTimePeriod,
     deleteTask,
-    getTasksByDate
+    getTasksByDate,
+    updateTask
 }

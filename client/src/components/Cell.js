@@ -8,7 +8,8 @@ function Cell (props){
         color: "#FFFFFF",
         start: indexToTime(props.index, 30),
         end: indexToTime(props.index + 1, 30),
-        day: props.par
+        day: props.par,
+        text: ""
     });
     const [pop, setPop] = useState(false);
     const target = useRef(null);
@@ -21,11 +22,34 @@ function Cell (props){
     }
 
     useEffect(() => {
-        if(props.value === "School"){
+        let x = "#FFFFFF"
+
+        if(props.value[0] !== ""){
+            x = "#DCDCDC"
+        }
+        if(props.value[0] === "Sleep"){
+            x = "#D866FF"
+        }
+        setState(prevState => {
+            return{
+                ...prevState,
+                color: x
+            }
+        })
+
+        if(props.value[1]){
+            //console.log("NOW HERE")
             setState(prevState => {
                 return{
                     ...prevState,
-                    color: "#555500"
+                    text: props.value[0]
+                }
+            })
+        }else{
+            setState(prevState => {
+                return{
+                    ...prevState,
+                    text: ""
                 }
             })
         }
@@ -33,12 +57,13 @@ function Cell (props){
 
     return (
         <>
-            <div style={{height: "15px", backgroundColor: state.color}}
+            <div style={{height: '15px', backgroundColor: state.color, fontSize: '11px'}}
+                 className='text-center'
                  ref={target}
                  onClick={cellFunction}
                  onMouseEnter={() => {setPop(true)}}
                  onMouseLeave={() => {setPop(false)}}
-            >{props.value}</div>
+            >{state.text}</div>
             <Overlay target={target.current} show={pop} placement="right" transition={false}>
                 {(props) => (
                     <Tooltip id="overlay-example" {...props}>

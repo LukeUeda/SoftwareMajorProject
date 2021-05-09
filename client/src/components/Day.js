@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 // import {Link} from 'react-router-dom';
 import Cell from "./Cell";
-import {DBtoIndex} from "./indexToTime";
+import {DBtoIndex, indexToTime, timeToDB} from "./indexToTime";
 
 function Day(props){
     const [state, setState] = useState({
@@ -12,7 +12,7 @@ function Day(props){
 
     const initialCellValues = {}
     const a = [...Array(48)].map((val, index) => {
-        initialCellValues[index] = ""
+        initialCellValues[index] = ["", false]
     })
 
     const [cellValues, setCellValues] = useState(initialCellValues);
@@ -20,11 +20,24 @@ function Day(props){
     const update = () => {
         setCellValues(initialCellValues)
         Object.entries(props.data).map((key, value) => {
-            for(let x = DBtoIndex(props.data[key[0]]["start"]); x < DBtoIndex(props.data[key[0]]["end"]); x++)
-            setCellValues(prevCellValues => {return {
-                ...prevCellValues,
-                [x]: props.data[key[0]]["task"]
-            }})
+            const y = DBtoIndex(props.data[key[0]]["end"])
+            const z = DBtoIndex(props.data[key[0]]["start"])
+            const textCell = Math.floor((z + y) / 2) - 1
+            //console.log("x: ", x, " y: ", y)
+            //console.log("TxtCell: ", textCell)
+            for(let x = DBtoIndex(props.data[key[0]]["start"]); x < DBtoIndex(props.data[key[0]]["end"]); x++){
+                let show = false
+                let text = props.data[key[0]]["task"];
+                if(x === textCell){
+                    //console.log("here, x: ",x)
+                    show = true;
+                }
+
+                setCellValues(prevCellValues => {return {
+                    ...prevCellValues,
+                    [x]: [text, show]
+                }})
+            }
         })
     }
 
