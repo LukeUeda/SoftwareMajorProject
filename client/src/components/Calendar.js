@@ -26,13 +26,14 @@ function Calendar(props){
     useEffect(() => {
         for(let x = 0; x < 7; x++){
             getTasksByDate(x).then(response => {
-                setCellData( {
-                    ...cellData,
-                    [x]:response.data
-                })
+                setCellData(prevCellData => {return {
+                    ...prevCellData,
+                    [x] : response.data
+                }})
             })
         }
     }, [])
+
 
 
     const select = (cell) => {
@@ -68,18 +69,31 @@ function Calendar(props){
         console.log("Calender State:", state)
         console.log("UI State:", bounds, task)
 
-        getTasksByTimePeriod(state.day, bounds);
+        postTask(bounds, task, state.day).then(id => {
+            getTasksByTimePeriod(state.day, bounds).then(response => {
+                for(const [key, val] of Object.entries(response["data"])) {
+                    console.log("GetTask: ",key, val["_id"]);
+                    if (val["_id"] !== id){
+                        deleteTask(val["_id"])
+                    }
+                }
+            });
+        })
+
+
         //deleteTask("6095d8aa8e7f93e90d6938d9");
 
 
-        postTask(bounds, task, state.day)
+
         getTasksByDate(state.day).then(response => {
-            setCellData({
-                ...cellData,
+            setCellData(prevCellData => {return {
+                ...prevCellData,
                 [state.day] : response.data
-            })
+            }})
             console.log(cellData[state.day])
         })
+
+        setState(initialState);
     }
 
     const switchMode = (num) => {

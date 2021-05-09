@@ -21,8 +21,15 @@ function Cell (props){
     }
 
     useEffect(() => {
-        console.log("Cell Updated")
-    },[])
+        if(props.value === "School"){
+            setState(prevState => {
+                return{
+                    ...prevState,
+                    color: "#555500"
+                }
+            })
+        }
+    }, [props.value])
 
     return (
         <>

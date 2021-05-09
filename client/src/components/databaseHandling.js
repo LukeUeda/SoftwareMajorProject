@@ -9,6 +9,7 @@ async function postTask(bounds, task, day) {
             end: timeToDB(bounds.end),
             task: task
         });
+        return(response["data"]["id"])
     } catch(error) {
         console.log('error', error);
     }
@@ -24,7 +25,8 @@ async function getTasksByTimePeriod(date, timePeriod) {
 }
 
 async function deleteTask(id){
-    await axios.delete(`/api/task/delete/${id}`)
+    const response = await axios.delete(`/api/task/delete/${id}`)
+    console.log(response["data"]["id"])
 }
 
 async function getTasksByDate(date) {
