@@ -25,7 +25,9 @@ function DBtoIndex(time){
 
 function timeToDB(time){
     let timeList = time.split(':');
+    console.log("time: ", time)
     timeList = timeList[0] + '.' + timeList[1];
+    console.log("TimeList: ", timeList)
     return timeList;
 }
 

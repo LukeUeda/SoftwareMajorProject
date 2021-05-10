@@ -1,14 +1,10 @@
 import axios, {get, post, patch} from "axios";
 import {timeToDB} from "./indexToTime";
 
-async function postTask(bounds, task, day) {
+async function postTask(entry) {
     try {
-        const response = await post('/api/task', {
-            date: day,
-            start: timeToDB(bounds.start),
-            end: timeToDB(bounds.end),
-            task: task
-        });
+        console.log(entry)
+        const response = await post('/api/task', entry);
         return(response["data"]["id"])
     } catch(error) {
         console.log('error', error);
