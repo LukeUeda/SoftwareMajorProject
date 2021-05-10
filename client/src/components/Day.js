@@ -33,15 +33,18 @@ function Day(props){
                     show = true;
                 }
 
-                setCellValues(prevCellValues => {return {
-                    ...prevCellValues,
-                    [x]: [text, show]
-                }})
+                setCellValues(prevCellValues => {
+                    return {
+                        ...prevCellValues,
+                        [x]: [text, show]
+                    }
+                })
             }
         })
     }
 
     useEffect(() => {
+        console.log("Day Updated")
         update()
     },[props.data])
 

@@ -35,10 +35,6 @@ function Calendar(props){
         }
     }, [])
 
-    useEffect(() => {
-        console.log(cellData);
-    }, [cellData])
-
     const select = (cell) => {
         /**
          * Handles cell presses.
@@ -59,6 +55,8 @@ function Calendar(props){
                 })
                 setSelection(true)
             }
+        } else if (mode === 'Edit') {
+            deleteCellData(cell, cell.day)
         }
     }
 
@@ -72,86 +70,40 @@ function Calendar(props){
         console.log("Calender State:", state)
         console.log("UI State:", bounds, task)
 
-        postTask({
-            date: state.day,
-            start: timeToDB(bounds.start),
-            end: timeToDB(bounds.end),
-            task: task
-        }).then(id => {
-            getTasksByTimePeriod(state.day, bounds).then(response => {
-                console.log(response);
-                response.data.filter(t => t._id !== id).map(t => {
-                    if(parseFloat(t.start) > timeToDB(bounds.start) && parseFloat(t.end) < timeToDB(bounds.end)){
-                        deleteTask(t._id).then(
-                            () => {
-                                console.log(`Deleted ${t._id}`)
-                            }
-                        );
-                    }
-
-                    else if(parseFloat(t.start) > timeToDB(bounds.start)){
-                        postTask({
-                            date: t.date,
-                            start: timeToDB(bounds.end),
-                            end: t.end,
-                            task: t.task
-                        })
-                        console.log("Start adjusted")
-                        deleteTask(t._id).then(
-                            () => {
-                                console.log(`Deleted ${t._id}`)
-                            }
-                        );
-                    }
-
-                    else if(parseFloat(t.end) < timeToDB(bounds.end)){
-                        postTask({
-                            date: t.date,
-                            end: timeToDB(bounds.start),
-                            start: t.start,
-                            task: t.task
-                        })
-                        console.log("End adjusted: ")
-                        deleteTask(t._id).then(
-                            () => {
-                                console.log(`Deleted ${t._id}`)
-                            }
-                        );
-                    }
-
-                    else{
-                        postTask({
-                            date: t.date,
-                            start: timeToDB(bounds.end),
-                            end: t.end,
-                            task: t.task
-                        })
-                        postTask({
-                            date: t.date,
-                            end: timeToDB(bounds.start),
-                            start: t.start,
-                            task: t.task
-                        })
-                        console.log("Start adjusted")
-                        deleteTask(t._id).then(
-                            () => {
-                                console.log(`Deleted ${t._id}`)
-                            }
-                        );
-                    }
-                });
-                getTasksByDate(state.day).then(response => {
-                    setCellData(prevCellData => {return {
-                        ...prevCellData,
-                        [state.day] : response.data
-                    }})
-                })
-            });
-        })
-
         //deleteTask("609793c8cd5e0625a6879527");
 
         setState(initialState);
+    }
+
+    const deleteCellData = (cell, day) => {
+        try{
+            let entry = cellData[day].findIndex(t =>
+                parseFloat(t.start) <= parseFloat(timeToDB(cell.start)) &&
+                parseFloat(t.end) >= parseFloat(timeToDB(cell.end))
+            )
+
+            console.log(entry)
+
+            let entries = cellData[day]
+
+            entries.splice(entry, 1)
+
+            if(entries === []){
+                entries = [{}]
+            }
+
+            console.log(entries)
+
+            setCellData({
+                ...cellData,
+                [day]: entries
+            })
+
+            console.log(cellData)
+            console.log(cell)
+        }catch (e){
+            console.log(e)
+        }
     }
 
     const switchMode = (num) => {
