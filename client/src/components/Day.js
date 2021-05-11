@@ -19,15 +19,15 @@ function Day(props){
 
     const update = () => {
         setCellValues(initialCellValues)
-        Object.entries(props.data).map((key, value) => {
-            const y = DBtoIndex(props.data[key[0]]["end"])
-            const z = DBtoIndex(props.data[key[0]]["start"])
-            const textCell = Math.floor((z + y) / 2) - 1
+        Object.entries(props.data[props.index]).map((key, value) => {
+            const y = DBtoIndex(props.data[props.index][key[0]]["end"])
+            const z = DBtoIndex(props.data[props.index][key[0]]["start"])
+            const textCell = Math.floor((z + y) / 2)
             //console.log("x: ", x, " y: ", y)
             //console.log("TxtCell: ", textCell)
-            for(let x = DBtoIndex(props.data[key[0]]["start"]); x < DBtoIndex(props.data[key[0]]["end"]); x++){
+            for(let x = DBtoIndex(props.data[props.index][key[0]]["start"]); x < DBtoIndex(props.data[props.index][key[0]]["end"]); x++){
                 let show = false
-                let text = props.data[key[0]]["task"];
+                let text = props.data[props.index][key[0]]["task"];
                 if(x === textCell){
                     //console.log("here, x: ",x)
                     show = true;

@@ -15,7 +15,19 @@ function Calendar(props){
     const [selection, setSelection] = useState(false);
     const [mode, setMode] = useState('Add');
     const [cellData, setCellData] = useState({
-        0: [{}],
+        0: [{
+                date: 0,
+                start: '00.00',
+                end: '07.00',
+                task: 'Sleep'
+            },
+            {
+                date: 0,
+                start: '12.00',
+                end: '15.00',
+                task: 'School'
+            }
+        ],
         1: [{}],
         2: [{}],
         3: [{}],
@@ -24,16 +36,19 @@ function Calendar(props){
         6: [{}]
     })
 
+    // useEffect(() => {
+    //     for(let x = 0; x < 7; x++){
+    //         getTasksByDate(x).then(response => {
+    //             setCellData(prevCellData => {return {
+    //                 ...prevCellData,
+    //                 [x] : response.data
+    //             }})
+    //         })
+    //     }
+    // }, [])
+
     useEffect(() => {
-        for(let x = 0; x < 7; x++){
-            getTasksByDate(x).then(response => {
-                setCellData(prevCellData => {return {
-                    ...prevCellData,
-                    [x] : response.data
-                }})
-            })
-        }
-    }, [])
+    }, [cellData])
 
     const select = (cell) => {
         /**
@@ -56,7 +71,7 @@ function Calendar(props){
                 setSelection(true)
             }
         } else if (mode === 'Edit') {
-            deleteCellData(cell, cell.day)
+            deleteCellData(timeToDB(cell.start), timeToDB(cell.end), cell.day)
         }
     }
 
@@ -67,22 +82,69 @@ function Calendar(props){
          * @param {[string]} task <= Name of task.
          * @return {[task schema]} <= Creates entry in specified schema.
          */
-        console.log("Calender State:", state)
-        console.log("UI State:", bounds, task)
 
-        //deleteTask("609793c8cd5e0625a6879527");
+        adjustIntersectingCellData(timeToDB(bounds.start), timeToDB(bounds.end), state.day)
+        addCellData(timeToDB(bounds.start), timeToDB(bounds.end), task, state.day)
 
         setState(initialState);
     }
 
-    const deleteCellData = (cell, day) => {
-        try{
-            let entry = cellData[day].findIndex(t =>
-                parseFloat(t.start) <= parseFloat(timeToDB(cell.start)) &&
-                parseFloat(t.end) >= parseFloat(timeToDB(cell.end))
-            )
 
-            console.log(entry)
+    const addCellData = (start, stop, task, day) => {
+        let entries = cellData[day]
+        entries.splice(0,0, {
+                start: start,
+                end: stop,
+                date: start,
+                task: task
+            }
+        )
+        setCellData({
+            ...cellData,
+            [day]: entries
+        })
+    }
+
+    const adjustIntersectingCellData = (start, end, day) => {
+        const condition1 = t => start <= t.start && t.start < end
+        const condition2 = t => start < t.end && t.end <= end
+        const condition3 = t => t.start < start && end < t.end
+
+        let periods = cellData[day].filter(t => condition1(t) || condition2(t) || condition3(t))
+
+        periods.map(t => {
+            if(condition1(t) && condition2(t)){
+                deleteCellData(start, end, day)
+            }
+            else if(condition1(t)){
+                deleteCellData(t.start, t.end, day)
+                addCellData(end, t.end, t.task, day)
+            }
+
+            else if(condition2(t)){
+                deleteCellData(t.start, t.end, day)
+                addCellData(t.start, start, t.task, day)
+            }
+
+            else if(condition3(t)){
+                deleteCellData(t.start, t.end, day)
+                addCellData(end, t.end, t.task, day)
+                addCellData(t.start, start, t.task, day)
+            }
+        })
+    }
+
+    const deleteCellData = (start, end, day) => {
+        /**
+         * Removes surrounding entry from local data.
+         * @param {[string]} cell.start <= Lower bound of cell.
+         * @param {[string]} cell.end <= Upper bound of cell.
+         * @param {[int]} day <= Index of day within week.
+         */
+            let entry = cellData[day].findIndex(t =>
+                parseFloat(t.start) <= parseFloat(timeToDB(start)) &&
+                parseFloat(t.end) >= parseFloat(timeToDB(end))
+            )
 
             let entries = cellData[day]
 
@@ -92,18 +154,10 @@ function Calendar(props){
                 entries = [{}]
             }
 
-            console.log(entries)
-
             setCellData({
                 ...cellData,
                 [day]: entries
             })
-
-            console.log(cellData)
-            console.log(cell)
-        }catch (e){
-            console.log(e)
-        }
     }
 
     const switchMode = (num) => {
@@ -112,22 +166,19 @@ function Calendar(props){
          * @param {[integer]} num <= Index of mode/button
          * @return {[string]} <= The 'mode' attribute is change according to index.
          */
-        console.log(num);
         switch (num){
             case '1':
                 setMode('Add');
-                console.log('Add Mode Active')
                 break;
             case '2':
                 setMode('Edit');
-                console.log('Edit Mode Active')
                 break;
         }
     }
 
     return(
         <div className="bg-light">
-            <Menu updateFunc={switchMode}></Menu>
+            <Menu updateFunc={switchMode}/>
             <br/>
             <div className="container">
                 <div className="row">
@@ -137,7 +188,7 @@ function Calendar(props){
                 </div>
                 <div className="row">
                     {Object.keys(cellData).map((key,index) => {
-                        return <div className="col-lg border m-0 p-0"><Day cellFunc={select} index={index} data={cellData[key]}/></div>
+                        return <div className="col-lg border m-0 p-0"><Day cellFunc={select} index={index} data={cellData}/></div>
                         }
                     )}
                 </div>
