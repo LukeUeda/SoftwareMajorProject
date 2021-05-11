@@ -12,7 +12,8 @@ import {timeToDB} from "./indexToTime";
 function Calendar(props){
     const initialState ={selectionStart: null, selectionEnd: null, day: null}
     const [state, setState] = useState(initialState);
-    const [selection, setSelection] = useState(false);
+    const [add, setAdd] = useState(false);
+    const [edit, setEdit] = useState(false);
     const [mode, setMode] = useState('Add');
     const [cellData, setCellData] = useState({
         0: [{
@@ -68,10 +69,19 @@ function Calendar(props){
                     ...state,
                     selectionEnd: cell.end
                 })
-                setSelection(true)
+                setAdd(true)
             }
         } else if (mode === 'Edit') {
-            deleteCellData(timeToDB(cell.start), timeToDB(cell.end), cell.day)
+            const entry = cellData[cell.date].filter(t =>
+                parseFloat(t.start) <= parseFloat(timeToDB(cell.start)) &&
+                parseFloat(t.end) >= parseFloat(timeToDB(cell.end))
+            )
+
+            setState({
+                ...state,
+                selectionStart: entry[0].start,
+                selectionEnd: entry[0].end,
+            })
         }
     }
 
@@ -193,14 +203,20 @@ function Calendar(props){
                     )}
                 </div>
             </div>
-            <SelectUi modalState={selection}
+            <SelectUi modalState={add}
                       onHide={() => {
                           setState(initialState)
-                          setSelection(false)
+                          setAdd(false)
                       }}
                       submit={addTask}
                       selection={state}
             />
+            {/*<EditUi modalState={add}*/}
+            {/*        onHide={() => {*/}
+            {/*            setState(initialState)*/}
+            {/*            setAdd(false)*/}
+            {/*        }}*/}
+            {/*/>*/}
         </div>
     );
 }

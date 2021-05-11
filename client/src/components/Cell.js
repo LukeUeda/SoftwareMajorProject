@@ -6,6 +6,7 @@ import {indexToTime} from "./indexToTime";
 function Cell (props){
     const [state, setState] = useState({
         color: "#FFFFFF",
+        border: ``,
         start: indexToTime(props.index, 30),
         end: indexToTime(props.index + 1, 30),
         day: props.par,
@@ -23,42 +24,45 @@ function Cell (props){
 
     useEffect(() => {
         let x = "#FFFFFF"
-
         if(props.value[0] !== ""){
             x = "#DCDCDC"
         }
         if(props.value[0] === "Sleep"){
             x = "#D866FF"
         }
+
+        let text = ``
+        let border = ``
+        if(props.value[0]){
+            border = `border-left border-right`
+        }
+        if(props.value[1]) {
+            text = props.value[0]
+        }
+
+        if(props.value[2].includes(`B`)){
+            border += ' border-bottom'
+        }
+        if(props.value[2].includes('T')){
+            border += ' border-top'
+        }
+
+
         setState(prevState => {
             return{
                 ...prevState,
+                text: text,
+                border: border,
                 color: x
             }
         })
 
-        if(props.value[1]){
-            //console.log("NOW HERE")
-            setState(prevState => {
-                return{
-                    ...prevState,
-                    text: props.value[0]
-                }
-            })
-        }else{
-            setState(prevState => {
-                return{
-                    ...prevState,
-                    text: ""
-                }
-            })
-        }
     }, [props.value])
 
     return (
         <>
             <div style={{height: '15px', backgroundColor: state.color, fontSize: '11px'}}
-                 className='text-center'
+                 className={'text-center border-dark ' + state.border}
                  ref={target}
                  onClick={cellFunction}
                  onMouseEnter={() => {setPop(true)}}

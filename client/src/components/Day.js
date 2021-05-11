@@ -12,7 +12,7 @@ function Day(props){
 
     const initialCellValues = {}
     const a = [...Array(48)].map((val, index) => {
-        initialCellValues[index] = ["", false]
+        initialCellValues[index] = ["", false, ``]
     })
 
     const [cellValues, setCellValues] = useState(initialCellValues);
@@ -27,16 +27,26 @@ function Day(props){
             //console.log("TxtCell: ", textCell)
             for(let x = DBtoIndex(props.data[props.index][key[0]]["start"]); x < DBtoIndex(props.data[props.index][key[0]]["end"]); x++){
                 let show = false
+                let border = `S`
                 let text = props.data[props.index][key[0]]["task"];
+
                 if(x === textCell){
                     //console.log("here, x: ",x)
                     show = true;
                 }
 
+                if(x === z){
+                    border += `T`
+                }
+
+                if(x === y-1){
+                    border += `B`
+                }
+
                 setCellValues(prevCellValues => {
                     return {
                         ...prevCellValues,
-                        [x]: [text, show]
+                        [x]: [text, show, border]
                     }
                 })
             }
