@@ -10,7 +10,7 @@ import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate, updateTask} 
 import {timeToDB} from "./indexToTime";
 
 function Calendar(props){
-    const initialState ={selectionStart: null, selectionEnd: null, day: null}
+    const initialState ={selectionStart: null, selectionEnd: null, day: null, startCell: null}
     const [state, setState] = useState(initialState);
     const [add, setAdd] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -48,9 +48,6 @@ function Calendar(props){
     //     }
     // }, [])
 
-    useEffect(() => {
-    }, [cellData])
-
     const select = (cell) => {
         /**
          * Handles cell presses.
@@ -62,13 +59,24 @@ function Calendar(props){
                 setState({
                     ...state,
                     selectionStart: cell.start,
-                    day: cell.day
+                    day: cell.day,
+                    startCell: cell
                 })
             }else if(state.day === cell.day){
-                setState({
-                    ...state,
-                    selectionEnd: cell.end
-                })
+                if(cell.end > state.selectionStart){
+                    setState({
+                        ...state,
+                        selectionEnd: cell.end
+                    })
+                }
+                else{
+                    setState({
+                        ...state,
+                        selectionEnd: state.startCell.end,
+                        selectionStart: cell.start
+                    })
+                }
+
                 setAdd(true)
             }
         } else if (mode === 'Edit') {
@@ -124,7 +132,8 @@ function Calendar(props){
 
         periods.map(t => {
             if(condition1(t) && condition2(t)){
-                deleteCellData(start, end, day)
+                console.log(t)
+                deleteCellData(t.start, t.end, day)
             }
             else if(condition1(t)){
                 deleteCellData(t.start, t.end, day)

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, createRef, useRef} from 'react';
 import {Alert, Button, Form, Modal} from "react-bootstrap";
 import TimeEntry from "./TimeEntry";
 
@@ -20,6 +20,7 @@ function SelectUi(props){
         correctOrder: false,
         appropriateName: false,
     })
+    const feild = useRef(null);
 
     const selection = (title, value) => {
         if(value !== '') {
@@ -40,6 +41,9 @@ function SelectUi(props){
     useEffect(() => {
         bounds.start = props.selection.selectionStart
         bounds.end = props.selection.selectionEnd
+        if(props.modalState){
+            feild.current.focus()
+        }
     }, [props.modalState])
 
     const validation = () => {
@@ -96,7 +100,15 @@ function SelectUi(props){
 
     return (
         <>
-            <Modal show={props.modalState} centered>
+            <Modal show={props.modalState} centered onKeyPress={event => {
+                var code = event.keyCode || event.which;
+                if(code === 13) { //13 is the enter keycode
+                    if(validation()){
+                        props.submit(bounds, task);
+                        closeFunc()
+                    }
+                }
+            }}>
                 <Modal.Header closeButton onClick={closeFunc}>
                     <Modal.Title>Add Task</Modal.Title>
                 </Modal.Header>
@@ -111,6 +123,7 @@ function SelectUi(props){
                     <Form.Control type="taskName"
                                   placeholder="Enter Task Name (Max 20 characters)"
                                   value={task}
+                                  ref={feild}
                                   onChange={(event) => {
                                       if(event.target.value.length < 20){setTask(event.target.value);}
                                   }}
