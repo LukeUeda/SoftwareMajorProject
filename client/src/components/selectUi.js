@@ -114,10 +114,10 @@ function SelectUi(props){
                 </Modal.Header>
                 <Modal.Body>
                     <TimeEntry title="Change Time Start" placeholder={props.selection.selectionStart} returnFunc={selection}/>
-                    <Alert variant="danger" style={{display: errMsgs.varType.start ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</Alert>
+                    <Alert variant="danger" style={{display: errMsgs.varType.start ? 'block' : 'none' }}>Time is not in the correct form (hh:mm).</Alert>
                     <Alert variant="danger" style={{display: errMsgs.inBounds.start ? 'block' : 'none' }}>Time out of bounds.</Alert>
                     <TimeEntry title="Change Time End" placeholder={props.selection.selectionEnd} returnFunc={selection}/>
-                    <Alert variant="danger" style={{display: errMsgs.varType.end ? 'block' : 'none' }}>Time is not in the correct form (h.mm).</Alert>
+                    <Alert variant="danger" style={{display: errMsgs.varType.end ? 'block' : 'none' }}>Time is not in the correct form (hh:mm).</Alert>
                     <Alert variant="danger" style={{display: errMsgs.inBounds.end ? 'block' : 'none' }}>Time out of bounds.</Alert>
                     <Alert variant="danger" style={{display: errMsgs.correctOrder ? 'block' : 'none' }}>You can't end earlier than you started!</Alert>
                     <Form.Control type="taskName"

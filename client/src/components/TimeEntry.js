@@ -3,7 +3,6 @@ import {Form, InputGroup, Modal} from "react-bootstrap";
 
 
 function TimeEntry(props){
-    const [active, setActive] = useState(false)
     const [input, setInput] = useState(props.placeholder)
 
     return(
