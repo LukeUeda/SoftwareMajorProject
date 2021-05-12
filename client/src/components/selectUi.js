@@ -41,9 +41,16 @@ function SelectUi(props){
     useEffect(() => {
         bounds.start = props.selection.selectionStart
         bounds.end = props.selection.selectionEnd
-        if(props.modalState){
-            feild.current.focus()
+        setTask(props.selection.taskName)
+
+        if(props.selection.taskName){
+
+        }else{
+            if(props.modalState){
+                feild.current.focus()
+            }
         }
+
     }, [props.modalState])
 
     const validation = () => {
@@ -98,6 +105,28 @@ function SelectUi(props){
         setTask('')
     }
 
+    const renderDeleteButton = () => {
+        if(props.selection.taskName !== ``){
+            return(
+                <Button variant="outline-dark"
+                        onClick={() => {
+                            props.delete();
+                            closeFunc()
+                        }}>
+                    Delete
+                </Button>
+            )
+        }
+    }
+
+    const submitText = () => {
+        if(props.selection.taskName !== ``) {
+            return `Edit`
+        }else{
+            return `Submit`
+        }
+    }
+
     return (
         <>
             <Modal show={props.modalState} centered onKeyPress={event => {
@@ -137,13 +166,19 @@ function SelectUi(props){
                     </Button>
                     <Button variant="success"
                             onClick={() => {
+                                if(props.selection.taskName !== ``){
+                                    props.delete()
+                                }
                                 if(validation()){
                                     props.submit(bounds, task);
                                     closeFunc()
                                 }
                             }}>
-                        Submit
+                        {submitText()}
                     </Button>
+                    {
+                        renderDeleteButton()
+                    }
                 </Modal.Footer>
             </Modal>
         </>

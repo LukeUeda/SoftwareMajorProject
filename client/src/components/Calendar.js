@@ -7,10 +7,10 @@ import EditUi from "./editUi";
 import SelectUi from "./selectUi";
 import Menu from "./Menu";
 import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate, updateTask} from "./databaseHandling";
-import {timeToDB} from "./indexToTime";
+import {DBtoTime, timeToDB} from "./indexToTime";
 
 function Calendar(props){
-    const initialState ={selectionStart: null, selectionEnd: null, day: null, startCell: null}
+    const initialState ={selectionStart: null, selectionEnd: null, day: null, startCell: null, taskName: ``}
     const [state, setState] = useState(initialState);
     const [add, setAdd] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -80,8 +80,27 @@ function Calendar(props){
                 setAdd(true)
             }
         } else if (mode === 'Edit') {
-            deleteCellData(cell.start, cell.end, cell.day)
+            const condition1 = t => t.start <= timeToDB(cell.start)
+            const condition2 = t => t.end >= timeToDB(cell.end)
+
+            let period = cellData[cell.day].filter(t => condition1(t) && condition2(t))[0]
+            console.log(period)
+            if(period){
+                setState({
+                    ...state,
+                    selectionStart: DBtoTime(period.start),
+                    selectionEnd: DBtoTime(period.end),
+                    day: cell.day,
+                    startCell: cell,
+                    taskName: period.task
+                })
+                setAdd(true)
+            }
         }
+    }
+
+    const deleteTask = () => {
+        deleteCellData(timeToDB(state.startCell.start), timeToDB(state.startCell.end), state.day)
     }
 
     const addTask = (bounds, task) => {
@@ -211,16 +230,8 @@ function Calendar(props){
                           }
                       }
                       submit={addTask}
+                      delete={deleteTask}
                       selection={state}
-            />
-            <EditUi modalState={add}
-                    onHide={
-                        () => {
-                            setState(initialState)
-                            setAdd(false)
-                        }
-                    }
-                    selection={state}
             />
         </div>
     );

@@ -29,8 +29,15 @@ function timeToDB(time){
     return timeList;
 }
 
+function DBtoTime(time){
+    let timeList = time.split('.');
+    timeList = timeList[0] + ':' + timeList[1];
+    return timeList;
+}
+
 export {
     indexToTime,
     timeToDB,
-    DBtoIndex
+    DBtoIndex,
+    DBtoTime
 }

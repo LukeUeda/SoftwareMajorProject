@@ -19,32 +19,40 @@ function Cell (props){
         /**
          * Calls function from parent component.
          */
+        // setState({
+        //     ...state,
+        //     color: "#AAAAAA"
+        // })
         props.cellFunc(state)
     }
 
     useEffect(() => {
         let x = "#FFFFFF"
+        let border = ``
+
         if(props.value[0] !== ""){
             x = "#DCDCDC"
+        }else{
+            border = `border border-0.5 border-secondary`
         }
         if(props.value[0] === "Sleep"){
             x = "#D866FF"
         }
 
         let text = ``
-        let border = ``
+
         if(props.value[0]){
-            border = `border-left border-right`
+            border = `border-dark border-left border-right`
         }
         if(props.value[1]) {
             text = props.value[0]
         }
 
         if(props.value[2].includes(`B`)){
-            border += ' border-bottom'
+            border += ' border-bottom rounded-bottom'
         }
         if(props.value[2].includes('T')){
-            border += ' border-top'
+            border += ' border-top rounded-top'
         }
 
 
@@ -62,7 +70,7 @@ function Cell (props){
     return (
         <>
             <div style={{height: '15px', backgroundColor: state.color, fontSize: '11px'}}
-                 className={'text-center border-dark ' + state.border}
+                 className={'text-center ' + state.border}
                  ref={target}
                  onClick={cellFunction}
                  onMouseEnter={() => {setPop(true)}}
