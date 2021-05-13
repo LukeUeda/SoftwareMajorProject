@@ -1,10 +1,11 @@
 import './App.css';
 import Calendar from "./components/Calendar";
+import {DateTime} from "luxon";
 
 function App() {
   return (
     <div className="App">
-        <Calendar></Calendar>
+        <Calendar startDate = {DateTime.local().setLocale('fr-CA').startOf('week')}></Calendar>
     </div>
   );
 }

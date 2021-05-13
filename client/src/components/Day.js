@@ -59,7 +59,7 @@ function Day(props){
     },[props.data])
 
     return (
-        <div style={{height:"720px"}}>
+        <div style={{height:"624px"}}>
             {[...Array(48)].map((value, index) => {
                     return <Cell cellFunc={props.cellFunc} index={index} par={state.index} value={cellValues[index]}/>;})}
         </div>

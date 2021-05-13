@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios,{post, get} from 'axios';
+import {DateTime} from 'luxon'
 
 // import {Link} from 'react-router-dom';
 import Day from "./Day.js";
@@ -8,10 +9,12 @@ import SelectUi from "./selectUi";
 import Menu from "./Menu";
 import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate, updateTask} from "./databaseHandling";
 import {DBtoTime, timeToDB} from "./indexToTime";
+import {Table} from "react-bootstrap";
 
 function Calendar(props){
     const initialState ={selectionStart: null, selectionEnd: null, day: null, startCell: null, taskName: ``}
     const [state, setState] = useState(initialState);
+    const [startDate, setStartDate] = useState(props.startDate);
     const [add, setAdd] = useState(false);
     const [edit, setEdit] = useState(false);
     const [mode, setMode] = useState('Add');
@@ -37,16 +40,9 @@ function Calendar(props){
         6: [{}]
     })
 
-    // useEffect(() => {
-    //     for(let x = 0; x < 7; x++){
-    //         getTasksByDate(x).then(response => {
-    //             setCellData(prevCellData => {return {
-    //                 ...prevCellData,
-    //                 [x] : response.data
-    //             }})
-    //         })
-    //     }
-    // }, [])
+    useEffect(() => {
+        console.log(startDate.toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'}))
+    }, [])
 
     const select = (cell) => {
         /**
@@ -209,19 +205,28 @@ function Calendar(props){
         <div className="bg-light">
             <Menu updateFunc={switchMode}/>
             <br/>
-            <div className="container">
-                <div className="row">
-                    {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(name => {
-                        return <div className="col-lg border bg-dark text-light">{name}</div>
-                    })}
-                </div>
-                <div className="row">
-                    {Object.keys(cellData).map((key,index) => {
-                        return <div className="col-lg border m-0 p-0"><Day cellFunc={select} index={index} data={cellData}/></div>
-                        }
-                    )}
-                </div>
-            </div>
+            <Table className="table mx-auto" style={{width: '80%', display: 'grid' , gridTemplateColumns: 'repeat(auto)'}}>
+                <tbody>
+                    <tr>
+                        {[`Sunday`,
+                            `Monday`,
+                            `Tuesday`,
+                            `Wednesday`,
+                            `Thursday`,
+                            `Friday`,
+                            `Saturday`].map((name, index) => {
+                            return (
+                                <td>
+                                    <div className="border p-4 bg-dark text-light">
+                                        <h2>{name.split(':')[0]}</h2>
+                                        <label>{startDate.plus({day: index}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})}</label></div>
+                                    <div className="border m-0 p-0"><Day cellFunc={select} index={index} data={cellData}/></div>
+                                </td>
+                            )
+                        })}
+                    </tr>
+                </tbody>
+            </Table>
             <SelectUi modalState={add}
                       onHide={
                           () => {

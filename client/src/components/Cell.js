@@ -69,7 +69,7 @@ function Cell (props){
 
     return (
         <>
-            <div style={{height: '15px', backgroundColor: state.color, fontSize: '11px'}}
+            <div style={{height: '2.08%', backgroundColor: state.color, fontSize: '11px'}}
                  className={'text-center ' + state.border}
                  ref={target}
                  onClick={cellFunction}
