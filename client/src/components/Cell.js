@@ -64,7 +64,6 @@ function Cell (props){
                 color: x
             }
         })
-
     }, [props.value])
 
     return (

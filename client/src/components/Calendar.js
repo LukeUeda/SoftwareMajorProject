@@ -18,29 +18,17 @@ function Calendar(props){
     const [add, setAdd] = useState(false);
     const [edit, setEdit] = useState(false);
     const [mode, setMode] = useState('Add');
-    const [cellData, setCellData] = useState({
-        0: [{
-                date: 0,
-                start: '00.00',
-                end: '07.00',
-                task: 'Sleep'
-            },
-            {
-                date: 0,
-                start: '12.00',
-                end: '15.00',
-                task: 'School'
-            }
-        ],
-        1: [{}],
-        2: [{}],
-        3: [{}],
-        4: [{}],
-        5: [{}],
-        6: [{}]
-    })
+    const [cellData, setCellData] = useState({})
 
     useEffect(() => {
+        var data = {};
+        [...Array(7)].map(d => {
+            data[[startDate.plus({day: d}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})]] = [{}]
+        })
+
+        setCellData({
+            ...data
+        })
         console.log(startDate.toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'}))
     }, [])
 
@@ -107,8 +95,9 @@ function Calendar(props){
          * @return {[task schema]} <= Creates entry in specified schema.
          */
 
-        adjustIntersectingCellData(timeToDB(bounds.start), timeToDB(bounds.end), state.day)
-        addCellData(timeToDB(bounds.start), timeToDB(bounds.end), task, state.day)
+        console.log(cellData)
+        //adjustIntersectingCellData(timeToDB(bounds.start), timeToDB(bounds.end), state.day)
+        //addCellData(timeToDB(bounds.start), timeToDB(bounds.end), task, state.day)
 
         setState(initialState);
     }
@@ -224,15 +213,17 @@ function Calendar(props){
                             `Thursday`,
                             `Friday`,
                             `Saturday`].map((name, index) => {
-                            return (
-                                <td>
-                                    <div className="border p-4 bg-dark text-light">
-                                        <h2>{name.split(':')[0]}</h2>
-                                        <label>{startDate.plus({day: index}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})}</label></div>
-                                    <div className="border m-0 p-0"><Day cellFunc={select} index={index} data={cellData}/></div>
-                                </td>
-                            )
-                        })}
+                                var day = startDate.plus({day: index - 1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})
+                                return (
+                                    <td>
+                                        <div className="border p-4 bg-dark text-light">
+                                            <h2>{name.split(':')[0]}</h2>
+                                            <label>{day}</label></div>
+                                        <div className="border m-0 p-0"><Day cellFunc={select} date={day} data={cellData}/></div>
+                                    </td>
+                                )
+                            })
+                        }
                     </tr>
                 </tbody>
             </Table>
