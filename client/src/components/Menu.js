@@ -12,7 +12,7 @@ function Menu(props){
 
     return (
         <>
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg={props.syl()} variant="dark">
                 <Navbar.Brand href="#home">Navbar</Navbar.Brand>
                 <Nav className="mr-auto">
                     <ButtonGroup toggle>
@@ -20,7 +20,7 @@ function Menu(props){
                             <ToggleButton
                                 key={idx}
                                 type="radio"
-                                variant="secondary"
+                                variant="dark"
                                 name="radio"
                                 value={radio.value}
                                 checked={radioValue === radio.value}
@@ -36,7 +36,7 @@ function Menu(props){
                 </Nav>
                 <Form inline>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2"/>
-                    <Button variant="outline-info">Search</Button>
+                    <Button variant="outline-dark">Search</Button>
                 </Form>
             </Navbar>
 

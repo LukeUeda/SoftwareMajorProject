@@ -201,9 +201,18 @@ function Calendar(props){
         }
     }
 
+    const bgColor = () => {
+        if(mode === 'Add'){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
     return(
-        <div className="bg-light">
-            <Menu updateFunc={switchMode}/>
+        <div className="my-auto" style={{background: bgColor() ? '#B9D8FF' : '#FFDDB9', height:'100%'}}>
+            <Menu updateFunc={switchMode} syl={() => {if(bgColor()){return 'primary'} else {return 'warning'}}}/>
             <br/>
             <Table className="table mx-auto" style={{width: '80%', display: 'grid' , gridTemplateColumns: 'repeat(auto)'}}>
                 <tbody>
