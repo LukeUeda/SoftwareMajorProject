@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Form, InputGroup, Modal} from "react-bootstrap";
+import {Form, InputGroup} from "react-bootstrap";
 
 
 function TimeEntry(props){

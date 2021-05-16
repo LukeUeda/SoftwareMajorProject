@@ -8,6 +8,7 @@ function Menu(props){
     const radios = [
         { name: 'Add', value: '1' },
         { name: 'Edit', value: '2' },
+        { name: 'Schedule', value: '3'}
     ];
 
     return (

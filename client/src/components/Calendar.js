@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import axios,{post, get} from 'axios';
-import {DateTime} from 'luxon'
 
 // import {Link} from 'react-router-dom';
 import Day from "./Day.js";
-import EditUi from "./editUi";
 import SelectUi from "./selectUi";
+import ScheduleUi from "./scheduleUi";
 import Menu from "./Menu";
-import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate, updateTask} from "./databaseHandling";
 import {DBtoTime, timeToDB} from "./indexToTime";
 import {Button, Table} from "react-bootstrap";
 
@@ -16,6 +13,7 @@ function Calendar(props){
     const [state, setState] = useState(initialState);
     const [startDate, setStartDate] = useState(props.startDate);
     const [add, setAdd] = useState(false);
+    const [schedule, setSchedule] = useState(false);
     const [mode, setMode] = useState('Add');
     const [cellData, setCellData] = useState({})
 
@@ -27,6 +25,7 @@ function Calendar(props){
                 data[startDate.plus({day: d-1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})] = [{}]
             }
         })
+
         setCellData({
             ...cellData,
             ...data,
@@ -65,7 +64,7 @@ function Calendar(props){
 
                 setAdd(true)
             }
-        } else if (mode === 'Edit') {
+        } else {
             const condition1 = t => t.start <= timeToDB(cell.start)
             const condition2 = t => t.end >= timeToDB(cell.end)
 
@@ -80,7 +79,15 @@ function Calendar(props){
                     startCell: cell,
                     taskName: period.task
                 })
+            }
+
+            if (mode === 'Edit') {
                 setAdd(true)
+            }
+
+            else if (mode === 'Schedule') {
+                console.log('Schedule')
+                setSchedule(true)
             }
         }
     }
@@ -190,21 +197,26 @@ function Calendar(props){
             case '2':
                 setMode('Edit');
                 break;
-        }
-    }
-
-    const bgColor = () => {
-        if(mode === 'Add'){
-            return true
-        }
-        else{
-            return false
+            case '3':
+                setMode('Schedule');
+                break;
         }
     }
 
     return(
-        <div className="my-auto" style={{background: bgColor() ? '#B9D8FF' : '#FFDDB9', height:'100%'}}>
-            <Menu updateFunc={switchMode} syl={() => {if(bgColor()){return 'primary'} else {return 'warning'}}}/>
+        <div className="my-auto" style={{height:'100%'}}>
+            <Menu updateFunc={switchMode}
+                  syl={
+                      () => {
+                          if(mode === 'Add'){
+                              return 'primary'
+                          } else if(mode === 'Edit'){
+                              return 'warning'
+                          } else{
+                              return 'success'
+                          }
+                      }
+                  }/>
             <br/>
             <Table className="table mx-auto" style={{width: '80%', display: 'grid' , gridTemplateColumns: 'repeat(auto)'}}>
                 <tbody>
@@ -258,6 +270,12 @@ function Calendar(props){
                       delete={deleteTask}
                       selection={state}
             />
+            <ScheduleUi modalState={schedule}
+                        onHide={
+                            () => {
+                                setSchedule(false)
+                            }
+                        }/>
         </div>
     );
 }

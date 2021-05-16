@@ -1,5 +1,5 @@
-import React, {Component, useEffect, useRef, useState} from 'react';
-import {Button, Overlay, Tooltip} from "react-bootstrap";
+import React, {useEffect, useRef, useState} from 'react';
+import {Overlay, Tooltip} from "react-bootstrap";
 import {indexToTime} from "./indexToTime";
 // import {Link} from 'react-router-dom';
 

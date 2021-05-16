@@ -1,4 +1,4 @@
-import React, {useState, useEffect, createRef, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Alert, Button, Form, Modal} from "react-bootstrap";
 import TimeEntry from "./TimeEntry";
 
@@ -77,7 +77,7 @@ function SelectUi(props){
 
         const correctOrder = (endVal > startVal);
 
-        const appropriateName = task != ""
+        const appropriateName = task !== ""
         const finalBool = VarTypeStart && VarTypeEnd && inBoundsStart && inBoundsEnd && correctOrder && appropriateName
 
         setErrMsgs({
@@ -157,7 +157,6 @@ function SelectUi(props){
                                       if(event.target.value.length < 20){setTask(event.target.value);}
                                   }}
                     />
-                    <label></label>
                     <Alert variant="danger" style={{display: errMsgs.appropriateName ? 'block' : 'none' }}>Please enter an acceptable task name.</Alert>
                 </Modal.Body>
                 <Modal.Footer>
