@@ -59,8 +59,28 @@ function Day(props){
 
     return (
         <div style={{height:"624px"}}>
-            {[...Array(48)].map((value, index) => {
-                    return <Cell cellFunc={props.cellFunc} index={index} par={props.date} value={cellValues[index]}/>;})}
+            {[...Array(48)]
+                .map(
+                    (v, index) => {
+                        return(
+                            <Cell cellFunc={props.cellFunc}
+                                  index={index}
+                                  par={props.date}
+                                  sel={
+                                      () => {
+                                          if(props.startSelection[1] === props.date){
+                                              return props.startSelection[0]
+                                          }else{
+                                              return null
+                                          }
+                                      }
+                                  }
+                                  value={cellValues[index]}
+                            />
+                        )
+                    }
+                )
+            }
         </div>
     );
 }

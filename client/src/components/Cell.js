@@ -25,7 +25,7 @@ function Cell (props){
         props.cellFunc(state, props.par)
     }
 
-    useEffect(() => {
+    const valUpdateFunc = () => {
         let x = "#FFFFFF"
         let border = ``
 
@@ -63,7 +63,23 @@ function Cell (props){
                 color: x
             }
         })
-    }, [props.value])
+    }
+
+    useEffect(valUpdateFunc, [props.value])
+
+    useEffect(() =>{
+        console.log('UPDATE')
+        if(props.sel() !== null && state.start === props.sel().start){
+            setState(prevState => {
+                return{
+                    ...prevState,
+                    color: "#000000"
+                }
+            })
+        } else {
+            valUpdateFunc()
+        }
+    }, [props.sel])
 
     return (
         <>

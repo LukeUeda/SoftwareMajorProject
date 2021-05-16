@@ -15,10 +15,10 @@ function Calendar(props){
     const [add, setAdd] = useState(false);
     const [schedule, setSchedule] = useState(false);
     const [mode, setMode] = useState('Add');
-    const [cellData, setCellData] = useState({})
+    const [cellData, setCellData] = useState({});
 
     useEffect(() => {
-        var data = {};
+        let data = {};
         [0, 1, 2, 3, 4, 5, 6].forEach(d => {
             console.log('d: ', d)
             if(!cellData[startDate.plus({day: d-1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})]){
@@ -79,15 +79,14 @@ function Calendar(props){
                     startCell: cell,
                     taskName: period.task
                 })
-            }
+                if (mode === 'Edit') {
+                    setAdd(true)
+                }
 
-            if (mode === 'Edit') {
-                setAdd(true)
-            }
-
-            else if (mode === 'Schedule') {
-                console.log('Schedule')
-                setSchedule(true)
+                else if (mode === 'Schedule') {
+                    console.log('Schedule')
+                    setSchedule(true)
+                }
             }
         }
     }
@@ -201,6 +200,13 @@ function Calendar(props){
                 setMode('Schedule');
                 break;
         }
+        onHideReset()
+    }
+
+    const onHideReset = () => {
+        setState(initialState)
+        setSchedule(false)
+        setAdd(false)
     }
 
     return(
@@ -235,17 +241,31 @@ function Calendar(props){
                             `Wednesday`,
                             `Thursday`,
                             `Friday`,
-                            `Saturday`].map((name, index) => {
-                                var day = startDate.plus({day: index - 1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})
-                                return (
-                                    <td>
-                                        <div className="border p-4 bg-dark text-light">
-                                            <h2>{name.split(':')[0]}</h2>
-                                            <label>{day}</label></div>
-                                        <div className="border m-0 p-0"><Day cellFunc={select} date={day} data={cellData}/></div>
-                                    </td>
-                                )
-                            })
+                            `Saturday`].map(
+                                (name, index) => {
+                                    let day = startDate.plus({day: index - 1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})
+                                    return (
+                                        <td>
+                                            <div className="border p-4 bg-dark text-light">
+                                                <h2>
+                                                    {name}
+                                                </h2>
+                                                <label>
+                                                    {day}
+                                                </label>
+                                            </div>
+                                            <div className="border m-0 p-0">
+                                                <Day cellFunc={select}
+                                                     date={day}
+                                                     startSelection={
+                                                         [state.startCell, state.day]
+                                                     }
+                                                     data={cellData}/>
+                                            </div>
+                                        </td>
+                                    )
+                                }
+                            )
                         }
                         <td className="d-flex align-items-center">
                             <Button type="button" className="box btn btn-dark" onClick={
@@ -260,22 +280,15 @@ function Calendar(props){
                 </tbody>
             </Table>
             <SelectUi modalState={add}
-                      onHide={
-                          () => {
-                              setState(initialState)
-                              setAdd(false)
-                          }
-                      }
+                      onHide={onHideReset}
                       submit={addTask}
                       delete={deleteTask}
                       selection={state}
+                      text={mode}
             />
             <ScheduleUi modalState={schedule}
-                        onHide={
-                            () => {
-                                setSchedule(false)
-                            }
-                        }/>
+                        onHide={onHideReset}
+            />
         </div>
     );
 }

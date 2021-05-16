@@ -16,7 +16,7 @@ function ScheduleUi(props){
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Body
+                    Yeet
                 </Modal.Body>
                 <Modal.Footer>
                     Footer

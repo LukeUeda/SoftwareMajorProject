@@ -139,7 +139,7 @@ function SelectUi(props){
                 }
             }}>
                 <Modal.Header closeButton onClick={closeFunc}>
-                    <Modal.Title>Add Task</Modal.Title>
+                    <Modal.Title>{`${props.text} Task`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <TimeEntry title="Change Time Start" placeholder={props.selection.selectionStart} returnFunc={selection}/>
