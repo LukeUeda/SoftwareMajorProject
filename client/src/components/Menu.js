@@ -1,5 +1,6 @@
 import {ToggleButton, ButtonGroup, Button, Navbar, Nav, Form, FormControl} from "react-bootstrap";
 import React, {useState} from "react";
+import HelpButton from "./helpButton";
 
 
 function Menu(props){
@@ -14,7 +15,7 @@ function Menu(props){
     return (
         <>
             <Navbar bg={props.syl()} variant="dark">
-                <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+                <Navbar.Brand href="#home">TimeTabler</Navbar.Brand>
                 <Nav className="mr-auto">
                     <ButtonGroup toggle>
                         {radios.map((radio, idx) => (
@@ -36,8 +37,7 @@ function Menu(props){
                     </ButtonGroup>
                 </Nav>
                 <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2"/>
-                    <Button variant="outline-dark">Search</Button>
+                    <HelpButton/>
                 </Form>
             </Navbar>
 

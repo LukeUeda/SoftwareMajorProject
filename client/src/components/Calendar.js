@@ -6,7 +6,7 @@ import SelectUi from "./selectUi";
 import ScheduleUi from "./scheduleUi";
 import Menu from "./Menu";
 import {DBtoTime, timeToDB} from "./indexToTime";
-import {Button, Table} from "react-bootstrap";
+import {Button, Card, Carousel, ListGroup, ListGroupItem, Table} from "react-bootstrap";
 
 function Calendar(props){
     const initialState ={selectionStart: null, selectionEnd: null, day: null, startCell: null, taskName: ``}
@@ -40,7 +40,7 @@ function Calendar(props){
          * @return {[state changes]} <= Cell state attributes.
          */
         if(mode === 'Add'){
-            if(state.selectionStart === null){
+            if(state.selectionStart === null || state.day !== day){
                 setState({
                     ...state,
                     selectionStart: cell.start,
@@ -61,7 +61,6 @@ function Calendar(props){
                         selectionStart: cell.start
                     })
                 }
-
                 setAdd(true)
             }
         } else {
@@ -210,7 +209,7 @@ function Calendar(props){
     }
 
     return(
-        <div className="my-auto" style={{height:'100%'}}>
+        <>
             <Menu updateFunc={switchMode}
                   syl={
                       () => {
@@ -223,25 +222,27 @@ function Calendar(props){
                           }
                       }
                   }/>
-            <br/>
-            <Table className="table mx-auto" style={{width: '80%', display: 'grid' , gridTemplateColumns: 'repeat(auto)'}}>
-                <tbody>
-                    <tr>
-                        <td className="d-flex align-items-center">
-                            <Button type="button" className="box btn btn-dark" onClick={
-                                () => {
-                                    setStartDate(startDate.plus({day: -7}))
+            <div className="row justify-content-center" style={{height:'100%'}}>
+                <div className="col-auto">
+                    <br/>
+                    <Table className="table mx-auto">
+                        <tbody className="mx-auto">
+                        <tr>
+                            <td className="d-flex align-items-center">
+                                <Button type="button" className="box btn btn-dark" onClick={
+                                    () => {
+                                        setStartDate(startDate.plus({day: -7}))
+                                    }
                                 }
-                            }
-                            >Prev</Button>
-                        </td>
-                        {[`Sunday`,
-                            `Monday`,
-                            `Tuesday`,
-                            `Wednesday`,
-                            `Thursday`,
-                            `Friday`,
-                            `Saturday`].map(
+                                >Prev</Button>
+                            </td>
+                            {[`Sunday`,
+                                `Monday`,
+                                `Tuesday`,
+                                `Wednesday`,
+                                `Thursday`,
+                                `Friday`,
+                                `Saturday`].map(
                                 (name, index) => {
                                     let day = startDate.plus({day: index - 1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})
                                     return (
@@ -266,30 +267,51 @@ function Calendar(props){
                                     )
                                 }
                             )
-                        }
-                        <td className="d-flex align-items-center">
-                            <Button type="button" className="box btn btn-dark" onClick={
-                                () => {
-                                    setStartDate(startDate.plus({day: 7}))
-                                    console.log(cellData)
-                                }
                             }
-                            >Next</Button>
-                        </td>
-                    </tr>
-                </tbody>
-            </Table>
-            <SelectUi modalState={add}
-                      onHide={onHideReset}
-                      submit={addTask}
-                      delete={deleteTask}
-                      selection={state}
-                      text={mode}
-            />
-            <ScheduleUi modalState={schedule}
-                        onHide={onHideReset}
-            />
-        </div>
+                            <td className="d-flex align-items-center">
+                                <Button type="button" className="box btn btn-dark" onClick={
+                                    () => {
+                                        setStartDate(startDate.plus({day: 7}))
+                                        console.log(cellData)
+                                    }
+                                }
+                                >Next</Button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </Table>
+                </div>
+                <SelectUi modalState={add}
+                          onHide={onHideReset}
+                          submit={addTask}
+                          delete={deleteTask}
+                          selection={state}
+                          text={mode}
+                />
+                <ScheduleUi modalState={schedule}
+                            onHide={onHideReset}
+                />
+                <Card style={{ width: '18rem' }}>
+                    <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+                    <Card.Body>
+                        <Card.Title>Card Title</Card.Title>
+                        <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                        </Card.Text>
+                    </Card.Body>
+                    <ListGroup className="list-group-flush">
+                        <ListGroupItem>Cras justo odio</ListGroupItem>
+                        <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
+                        <ListGroupItem>Vestibulum at eros</ListGroupItem>
+                    </ListGroup>
+                    <Card.Body>
+                        <Card.Link href="#">Card Link</Card.Link>
+                        <Card.Link href="#">Another Link</Card.Link>
+                    </Card.Body>
+                </Card>
+            </div>
+        </>
     );
 }
 
