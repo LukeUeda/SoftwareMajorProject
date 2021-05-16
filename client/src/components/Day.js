@@ -5,7 +5,6 @@ import {DBtoIndex, indexToTime, timeToDB} from "./indexToTime";
 
 function Day(props){
     const [state, setState] = useState({
-        day: props.date,
         start: '',
         end:  '',
     })
@@ -66,7 +65,7 @@ function Day(props){
     return (
         <div style={{height:"624px"}}>
             {[...Array(48)].map((value, index) => {
-                    return <Cell cellFunc={props.cellFunc} index={index} par={state.day} value={cellValues[index]}/>;})}
+                    return <Cell cellFunc={props.cellFunc} index={index} par={props.date} value={cellValues[index]}/>;})}
         </div>
     );
 }

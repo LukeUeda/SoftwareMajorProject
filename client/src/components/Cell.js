@@ -9,7 +9,6 @@ function Cell (props){
         border: ``,
         start: indexToTime(props.index, 30),
         end: indexToTime(props.index + 1, 30),
-        day: props.par,
         text: ""
     });
     const [pop, setPop] = useState(false);
@@ -23,7 +22,7 @@ function Cell (props){
         //     ...state,
         //     color: "#AAAAAA"
         // })
-        props.cellFunc(state)
+        props.cellFunc(state, props.par)
     }
 
     useEffect(() => {

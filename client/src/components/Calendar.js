@@ -9,30 +9,32 @@ import SelectUi from "./selectUi";
 import Menu from "./Menu";
 import {deleteTask, getTasksByTimePeriod, postTask, getTasksByDate, updateTask} from "./databaseHandling";
 import {DBtoTime, timeToDB} from "./indexToTime";
-import {Table} from "react-bootstrap";
+import {Button, Table} from "react-bootstrap";
 
 function Calendar(props){
     const initialState ={selectionStart: null, selectionEnd: null, day: null, startCell: null, taskName: ``}
     const [state, setState] = useState(initialState);
     const [startDate, setStartDate] = useState(props.startDate);
     const [add, setAdd] = useState(false);
-    const [edit, setEdit] = useState(false);
     const [mode, setMode] = useState('Add');
     const [cellData, setCellData] = useState({})
 
     useEffect(() => {
         var data = {};
-        [...Array(7)].map(d => {
-            data[[startDate.plus({day: d}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})]] = [{}]
+        [0, 1, 2, 3, 4, 5, 6].forEach(d => {
+            console.log('d: ', d)
+            if(!cellData[startDate.plus({day: d-1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})]){
+                data[startDate.plus({day: d-1}).toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'})] = [{}]
+            }
         })
-
         setCellData({
-            ...data
+            ...cellData,
+            ...data,
         })
-        console.log(startDate.toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'}))
-    }, [])
 
-    const select = (cell) => {
+        console.log(startDate.toLocaleString('en-AU', {year: 'numeric', month: 'numeric', day: 'numeric'}))
+    }, [startDate])
+    const select = (cell, day) => {
         /**
          * Handles cell presses.
          * @param {[dictionary]} cell <= Start and end defines time block.
@@ -43,10 +45,10 @@ function Calendar(props){
                 setState({
                     ...state,
                     selectionStart: cell.start,
-                    day: cell.day,
+                    day: day,
                     startCell: cell
                 })
-            }else if(state.day === cell.day){
+            }else if(state.day === day){
                 if(cell.end > state.selectionStart){
                     setState({
                         ...state,
@@ -67,14 +69,14 @@ function Calendar(props){
             const condition1 = t => t.start <= timeToDB(cell.start)
             const condition2 = t => t.end >= timeToDB(cell.end)
 
-            let period = cellData[cell.day].filter(t => condition1(t) && condition2(t))[0]
+            let period = cellData[day].filter(t => condition1(t) && condition2(t))[0]
             console.log(period)
             if(period){
                 setState({
                     ...state,
                     selectionStart: DBtoTime(period.start),
                     selectionEnd: DBtoTime(period.end),
-                    day: cell.day,
+                    day: day,
                     startCell: cell,
                     taskName: period.task
                 })
@@ -95,9 +97,10 @@ function Calendar(props){
          * @return {[task schema]} <= Creates entry in specified schema.
          */
 
+        console.log(state)
         console.log(cellData)
-        //adjustIntersectingCellData(timeToDB(bounds.start), timeToDB(bounds.end), state.day)
-        //addCellData(timeToDB(bounds.start), timeToDB(bounds.end), task, state.day)
+        adjustIntersectingCellData(timeToDB(bounds.start), timeToDB(bounds.end), state.day)
+        addCellData(timeToDB(bounds.start), timeToDB(bounds.end), task, state.day)
 
         setState(initialState);
     }
@@ -206,6 +209,14 @@ function Calendar(props){
             <Table className="table mx-auto" style={{width: '80%', display: 'grid' , gridTemplateColumns: 'repeat(auto)'}}>
                 <tbody>
                     <tr>
+                        <td className="d-flex align-items-center">
+                            <Button type="button" className="box btn btn-dark" onClick={
+                                () => {
+                                    setStartDate(startDate.plus({day: -7}))
+                                }
+                            }
+                            >Prev</Button>
+                        </td>
                         {[`Sunday`,
                             `Monday`,
                             `Tuesday`,
@@ -224,6 +235,15 @@ function Calendar(props){
                                 )
                             })
                         }
+                        <td className="d-flex align-items-center">
+                            <Button type="button" className="box btn btn-dark" onClick={
+                                () => {
+                                    setStartDate(startDate.plus({day: 7}))
+                                    console.log(cellData)
+                                }
+                            }
+                            >Next</Button>
+                        </td>
                     </tr>
                 </tbody>
             </Table>
