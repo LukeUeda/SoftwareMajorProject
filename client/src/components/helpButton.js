@@ -54,7 +54,12 @@ function HelpButton(){
                     Note: If you press cells that intersect with other tasks, the other tasks will be altered or removed so that the task can be submitted
                     <br/>
                     <Image src={findingFriends} fluid width='70%' height='70%' className="border border-dark"/>
+                    <br/>
+                    <br/>
                     <h2><u>Editing Tasks:</u></h2>
+                    Edit mode allows you to alter added tasks. In edit mode, pressing tasks activates the edit menu, which is essentially a modified
+                    <em> Add Mode </em>
+                    UI. Upon submission the current task will be replaced by one with the modified parameters. 
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant='primary' closeButton onClick={togglePop}>Okay</Button>
