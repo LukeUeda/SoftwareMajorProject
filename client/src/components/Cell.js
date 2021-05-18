@@ -37,6 +37,27 @@ function Cell (props){
         if(props.value[0] === "Sleep"){
             x = "#D866FF"
         }
+        if(props.value[0] === "School"){
+            x = "#ffae00"
+        }
+        if(props.value[0] === "Work"){
+            x = "#379e00"
+        }
+        if(props.value[0] === "Relax"){
+            x = "#00f7ff"
+        }
+        if(props.value[0] === "Study"){
+            x = "#ff0000"
+        }
+        if(props.value[0] === "Dinner"){
+            x = "#adc9ff"
+        }
+        if(props.value[0] === "Lunch"){
+            x = "#aaff7d"
+        }
+        if(props.value[0] === "Breakfast"){
+            x = "#eeff00"
+        }
 
         let text = ``
 
