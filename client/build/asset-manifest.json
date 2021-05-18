@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.2e7919c8.chunk.css",
+    "main.js": "/static/js/main.c47be2e5.chunk.js",
+    "main.js.map": "/static/js/main.c47be2e5.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.e13eea54.js",
+    "runtime-main.js.map": "/static/js/runtime-main.e13eea54.js.map",
+    "static/js/2.023c2be4.chunk.js": "/static/js/2.023c2be4.chunk.js",
+    "static/js/2.023c2be4.chunk.js.map": "/static/js/2.023c2be4.chunk.js.map",
+    "static/js/3.38657330.chunk.js": "/static/js/3.38657330.chunk.js",
+    "static/js/3.38657330.chunk.js.map": "/static/js/3.38657330.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.2e7919c8.chunk.css.map": "/static/css/main.2e7919c8.chunk.css.map",
+    "static/js/2.023c2be4.chunk.js.LICENSE.txt": "/static/js/2.023c2be4.chunk.js.LICENSE.txt",
+    "static/media/AddTask.9057db62.png": "/static/media/AddTask.9057db62.png",
+    "static/media/Colors.206ab1de.png": "/static/media/Colors.206ab1de.png",
+    "static/media/EditMenu.56f58e41.png": "/static/media/EditMenu.56f58e41.png",
+    "static/media/FindingFriends.ceae476c.png": "/static/media/FindingFriends.ceae476c.png",
+    "static/media/Fortnite.3a571c78.png": "/static/media/Fortnite.3a571c78.png",
+    "static/media/PrevNext.976d0ca8.png": "/static/media/PrevNext.976d0ca8.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e13eea54.js",
+    "static/js/2.023c2be4.chunk.js",
+    "static/css/main.2e7919c8.chunk.css",
+    "static/js/main.c47be2e5.chunk.js"
+  ]
+}
