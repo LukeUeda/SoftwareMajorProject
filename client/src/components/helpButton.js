@@ -1,8 +1,8 @@
-import {Button, Image, Modal, Overlay, Tooltip} from "react-bootstrap";
-import React, {useRef, useState} from "react";
-import color from './images/Colors.png'
+import {Badge, Button, Image, Modal, Overlay, Tooltip} from "react-bootstrap";
+import React, {useState} from "react";
+import calenderNavigation from './images/CalenderNavigation.png'
+import colorSelection from './images/ColorSelection.png'
 import findingFriends from './images/FindingFriends.png'
-import fortnite from './images/Fortnite.png'
 import addTask from './images/AddTask.png'
 import editMenu from './images/EditMenu.png'
 import editTask from './images/EditMode.png'
@@ -10,11 +10,9 @@ import addHeader from './images/AddHeader.png'
 import prevNext from './images/PrevNext.png'
 
 function HelpButton(){
-    const target = useRef(null);
     const [pop, setPop] = useState(false);
 
     const togglePop = () => {
-        console.log("Toggled")
         setPop(!pop);
     }
 
@@ -28,19 +26,28 @@ function HelpButton(){
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <h2><u>New Features!</u></h2>
+                    <Badge variant="danger">New</Badge> Custom Colors are now supported! You can set them through the <em>Add Task</em> menu.
+                    <br/>
+                    <Image src={colorSelection} fluid width='40%' height='40%' className="border border-dark"/>
+                    <br/><br/>
+                    <Badge variant="danger">New</Badge> A better way to navigate through the new, simple to use calender UI!
+                    <br/>
+                    <Image src={calenderNavigation} fluid width='30%' height='30%' className="border border-dark"/>
+                    <br/><br/><br/>
                     <h2><u>Navigation:</u></h2>
                     Upon launching the software, the current week will be displayed in the UI.
                     In order to navigate throughout the year, the <em>prev</em> and <em>next</em> buttons allow you
                     to cycle through the weeks.
                     <br/>
-                    <Image src={prevNext} fluid  className="border border-dark"/>
+                    <Image src={prevNext} fluid className="border border-dark"/>
                     <br/><br/><br/>
                     <h2><u>Adding Tasks:</u></h2>
                     Add mode allows you to create tasks.
                     First, the interface must be in add mode,
-                    activated through the radio button located on the top left and indicated by the blue header.
+                    activated through the radio button located on the top left and indicated by the green header.
                     <br/>
-                    <Image src={addHeader} fluid width='30%' height='30%' className="border border-dark"/>
+                    <Image src={addHeader} fluid width='25%' height='25%' className="border border-dark"/>
                     <br/><br/>
                     Once in Add Mode, a period of time can be selected through pressing on the appropriate cells.
                     Upon hovering over a cell, a pop-over will show what block of time it represents.
@@ -50,12 +57,6 @@ function HelpButton(){
                     <br/><br/>
                     Within the menu, your selected values appear in the start and end fields, as well as an entry for the task name.
                     Here you can change your prior selection and enter in your desired task name.
-                    Currently, there is not support for custom colors, however there are preset colors for specified names:
-                    <Image src={color} fluid width='70%' height='70%' className="border border-dark"/>
-                    <br/><br/>
-                    ...Otherwise, any custom names will appear in a grey coloring.
-                    <br/>
-                    <Image src={fortnite} fluid width='40%' height='40%' className="border border-dark"/>
                     <br/><br/>
                     Note: If you press cells that intersect with other tasks, the other tasks will be altered or removed so that the task can be submitted.
                     <br/>

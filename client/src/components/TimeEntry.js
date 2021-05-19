@@ -14,8 +14,8 @@ function TimeEntry(props){
             <Form.Control
                 value={input}
                 onChange={(event) => {
-                    setInput(event.target.value);
-                    props.returnFunc(props.title, event.target.value)
+                    setInput(event.target.value); // Updating Input
+                    props.returnFunc(props.title, event.target.value) // Sending input to parent
                 }}
                 aria-label="Username"
                 aria-describedby="basic-addon1"

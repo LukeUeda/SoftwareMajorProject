@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Overlay, Tooltip} from "react-bootstrap";
 import {indexToTime} from "./indexToTime";
-// import {Link} from 'react-router-dom';
 
 function Cell (props){
     const [state, setState] = useState({
@@ -18,45 +17,17 @@ function Cell (props){
         /**
          * Calls function from parent component.
          */
-        // setState({
-        //     ...state,
-        //     color: "#AAAAAA"
-        // })
         props.cellFunc(state, props.par)
     }
 
     const valUpdateFunc = () => {
-        let x = "#FFFFFF"
+        /**
+         * Updates style based on parsed cell data.
+         */
         let border = ``
 
-        if(props.value[0] !== ""){
-            x = "#DCDCDC"
-        }else{
+        if(props.value[0] === ""){
             border = `border border-0.5 border-secondary`
-        }
-        if(props.value[0] === "Sleep"){
-            x = "#D866FF"
-        }
-        if(props.value[0] === "School"){
-            x = "#ffae00"
-        }
-        if(props.value[0] === "Work"){
-            x = "#379e00"
-        }
-        if(props.value[0] === "Relax"){
-            x = "#00f7ff"
-        }
-        if(props.value[0] === "Study"){
-            x = "#ff0000"
-        }
-        if(props.value[0] === "Dinner"){
-            x = "#adc9ff"
-        }
-        if(props.value[0] === "Lunch"){
-            x = "#aaff7d"
-        }
-        if(props.value[0] === "Breakfast"){
-            x = "#eeff00"
         }
 
         let text = ``
@@ -81,14 +52,15 @@ function Cell (props){
                 ...prevState,
                 text: text,
                 border: border,
-                color: x
+                color: props.value[3]
             }
         })
     }
 
+    //Runs initially and whenever the parsed 'props.value' changes => cellData from calender.js changes.
     useEffect(valUpdateFunc, [props.value])
 
-    useEffect(() =>{
+    useEffect(() =>{ //Runs initially and whenever the selection changes
         if(props.sel() !== null && state.start === props.sel().start){
             setState(prevState => {
                 return{
@@ -96,7 +68,9 @@ function Cell (props){
                     color: "#000000"
                 }
             })
-        } else {
+        }
+        else // Important for cleaning up cells if Add or Edit UI is cancelled.
+        {
             valUpdateFunc()
         }
     }, [props.sel])
@@ -107,7 +81,7 @@ function Cell (props){
                  className={'text-center ' + state.border}
                  ref={target}
                  onClick={cellFunction}
-                 onMouseEnter={() => {setPop(true)}}
+                 onMouseEnter={() => {setPop(true)}} // Time popover activate.
                  onMouseLeave={() => {setPop(false)}}
             >{state.text}</div>
             <Overlay target={target.current} show={pop} placement="right" transition={false}>

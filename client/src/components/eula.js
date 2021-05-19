@@ -1,26 +1,16 @@
 import {Button, Image, Modal, Overlay, Tooltip} from "react-bootstrap";
-import React, {useRef, useState} from "react";
-import color from './images/Colors.png'
-import findingFriends from './images/FindingFriends.png'
-import fortnite from './images/Fortnite.png'
-import addTask from './images/AddTask.png'
-import editMenu from './images/EditMenu.png'
-import editTask from './images/EditMode.png'
-import addHeader from './images/AddHeader.png'
-import prevNext from './images/PrevNext.png'
+import React, {useState} from "react";
 
 function Eula(){
-    const target = useRef(null);
-    const [pop, setPop] = useState(true);
+    const [pop, setPop] = useState(true); // Bool for showing modal
 
     const togglePop = () => {
-        console.log("Toggled")
         setPop(!pop);
     }
 
     return(
         <div>
-            <Button variant="light" onClick={togglePop}>EULA</Button>
+            <Button variant="light" onClick={togglePop} className="mr-sm-2">EULA</Button>
             <Modal show={pop} size="xl" centered>
                 <Modal.Header closeButton onClick={togglePop}>
                     <Modal.Title>
