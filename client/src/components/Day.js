@@ -30,7 +30,7 @@ function Day(props){
                     let border = `S` // Type of border arrangement.
                     let text = props.data[props.date][key[0]]["task"] // Task Name
                     let color = props.data[props.date][key[0]]["color"] // Color of task
-                    console.log(x === z, y === z)
+
                     if(x === textCell-1 || (x === z && y - z === 1)){
                         show = true; //Show text if cell is around centre
                     }

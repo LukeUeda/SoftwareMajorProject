@@ -34,6 +34,20 @@ function DBtoIndex(time){
     return hours + minutes;
 }
 
+function timeToIndex(time){
+    /**
+     * Converts Database form (hh:mm) back to index (hard coded 30min increments)
+     * @param {[string]} time <= Time in hh.mm
+     * @returns {[int]} <= Index of cell in day.
+     */
+    let timeList = (`${time}`).split(':');
+    const hours = parseInt(timeList[0]) * 2;
+    const minutes = parseFloat(timeList[1]) / 30
+
+    return hours + minutes;
+}
+
+
 function timeToDB(time){
     /**
      * Database did not allow for colons so this function replaces it with a decimal. Furthermore, a decimal allows
@@ -55,6 +69,7 @@ function DBtoTime(time){ // Reverse of timeToDB
 export {
     indexToTime,
     timeToDB,
+    timeToIndex,
     DBtoIndex,
-    DBtoTime
+    DBtoTime,
 }

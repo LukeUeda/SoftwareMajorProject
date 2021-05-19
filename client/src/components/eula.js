@@ -12,7 +12,7 @@ function Eula(){
         <div>
             <Button variant="light" onClick={togglePop} className="mr-sm-2">EULA</Button>
             <Modal show={pop} size="xl" centered>
-                <Modal.Header closeButton onClick={togglePop}>
+                <Modal.Header>
                     <Modal.Title>
                         <h1>EULA</h1>
                     </Modal.Title>

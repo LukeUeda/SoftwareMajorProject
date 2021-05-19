@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {Alert, Button, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import TimeEntry from "./TimeEntry";
 import {CirclePicker, SketchPicker} from "react-color";
+import {DBtoIndex, timeToDB, timeToIndex} from "./indexToTime";
 
 // import {Link} from 'react-router-dom';
 
@@ -74,12 +75,16 @@ function SelectUi(props){
         const VarTypeStart =
             startList.length === 2 &&
             !isNaN(startList[0]) &&
-            !isNaN(startList[1]);
+            !isNaN(startList[1]) &&
+            Number.isInteger(timeToIndex(bounds.start)) &&
+            startList[1] < 60 && 0 <= startList[1];
 
         const VarTypeEnd =
             endList.length === 2 &&
             !isNaN(endList[0]) &&
-            !isNaN(endList[1]);
+            !isNaN(endList[1]) &&
+            Number.isInteger(timeToIndex(bounds.end)) &&
+            endList[1] < 60 && 0 <= endList[1];
 
         const startVal = parseInt(startList[0]) + parseInt(startList[1]) * 0.01
         const endVal = parseInt(endList[0]) + parseInt(endList[1]) * 0.01
@@ -158,10 +163,10 @@ function SelectUi(props){
                 </Modal.Header>
                 <Modal.Body>
                     <TimeEntry title="Change Time Start" placeholder={props.selection.selectionStart} returnFunc={selection}/>
-                    <Alert variant="danger" style={{display: errMsgs.varType.start ? 'block' : 'none' }}>Time is not in the correct form (hh:mm).</Alert>
+                    <Alert variant="danger" style={{display: errMsgs.varType.start ? 'block' : 'none' }}>Time is not in the correct form (hh:mm) (30min increments).</Alert>
                     <Alert variant="danger" style={{display: errMsgs.inBounds.start ? 'block' : 'none' }}>Time out of bounds.</Alert>
                     <TimeEntry title="Change Time End" placeholder={props.selection.selectionEnd} returnFunc={selection}/>
-                    <Alert variant="danger" style={{display: errMsgs.varType.end ? 'block' : 'none' }}>Time is not in the correct form (hh:mm).</Alert>
+                    <Alert variant="danger" style={{display: errMsgs.varType.end ? 'block' : 'none' }}>Time is not in the correct form (hh:mm) (30min increments).</Alert>
                     <Alert variant="danger" style={{display: errMsgs.inBounds.end ? 'block' : 'none' }}>Time out of bounds.</Alert>
                     <Alert variant="danger" style={{display: errMsgs.correctOrder ? 'block' : 'none' }}>You can't end earlier than you started!</Alert>
                     <Form.Control type="taskName"
@@ -172,6 +177,8 @@ function SelectUi(props){
                                       if(event.target.value.length < 20){setTask(event.target.value);} // Limiting task name to 20 characters.
                                   }}
                     />
+                    <br/>
+                    <Alert variant="danger" style={{display: errMsgs.appropriateName ? 'block' : 'none' }}>Please enter an acceptable task name.</Alert>
                     <br/>
                     <Container>
                         <Row>
@@ -188,7 +195,6 @@ function SelectUi(props){
                             </Col>
                         </Row>
                     </Container>
-                    <Alert variant="danger" style={{display: errMsgs.appropriateName ? 'block' : 'none' }}>Please enter an acceptable task name.</Alert>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={closeFunc}>
@@ -197,7 +203,6 @@ function SelectUi(props){
                     <Button variant="success"
                             onClick={() => {
                                 if(validation()){
-                                    console.log(color)
                                     props.submit(bounds, task, color);
                                     closeFunc()
                                 }
