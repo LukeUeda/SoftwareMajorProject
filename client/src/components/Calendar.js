@@ -211,6 +211,7 @@ function Calendar(props){
     return(
         <>
             <Menu updateFunc={switchMode}
+                  thisWeek={() => {setStartDate(props.startDate)}}
                   syl={
                       () => {
                           if(mode === 'Add'){

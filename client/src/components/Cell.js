@@ -89,7 +89,6 @@ function Cell (props){
     useEffect(valUpdateFunc, [props.value])
 
     useEffect(() =>{
-        console.log('UPDATE')
         if(props.sel() !== null && state.start === props.sel().start){
             setState(prevState => {
                 return{

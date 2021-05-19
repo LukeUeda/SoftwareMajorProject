@@ -13,21 +13,19 @@ function Day(props){
 
     const update = () => {
         setCellValues(initialCellValues)
-        console.log(props.date)
         try{
             Object.entries(props.data[props.date]).map((key) => {
                 const y = DBtoIndex(props.data[props.date][key[0]]["end"])
                 const z = DBtoIndex(props.data[props.date][key[0]]["start"])
                 const textCell = Math.floor((z + y) / 2)
-                //console.log("x: ", x, " y: ", y)
-                //console.log("TxtCell: ", textCell)
+
                 for(let x = DBtoIndex(props.data[props.date][key[0]]["start"]); x < DBtoIndex(props.data[props.date][key[0]]["end"]); x++){
                     let show = false
                     let border = `S`
                     let text = props.data[props.date][key[0]]["task"];
 
                     if(x === textCell){
-                        //console.log("here, x: ",x)
+
                         show = true;
                     }
 
@@ -53,7 +51,6 @@ function Day(props){
     }
 
     useEffect(() => {
-        console.log("Day Updated")
         update()
     },[props.data])
 
