@@ -176,23 +176,23 @@ function Calendar(props){
         periods.map(t => {
             if(condition1(t) && condition2(t)){
                 console.log(t)
-                deleteCellData(t.start, t.end, day)
+                deleteCellData(t.start, t.end, day, t.color)
             }
 
             else if(condition1(t)){
                 deleteCellData(t.start, t.end, day)
-                addCellData(end, t.end, t.task, day)
+                addCellData(end, t.end, t.task, day, t.color)
             }
 
             else if(condition2(t)){
                 deleteCellData(t.start, t.end, day)
-                addCellData(t.start, start, t.task, day)
+                addCellData(t.start, start, t.task, day, t.color)
             }
 
             else if(condition3(t)){
                 deleteCellData(t.start, t.end, day)
                 addCellData(end, t.end, t.task, day)
-                addCellData(t.start, start, t.task, day)
+                addCellData(t.start, start, t.task, day, t.color)
             }
         })
     }
