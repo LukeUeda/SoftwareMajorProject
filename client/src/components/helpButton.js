@@ -18,7 +18,7 @@ function HelpButton(){
 
     return(
         <div>
-            <Button variant="outline-dark" onClick={togglePop}>Help</Button>
+            <Button variant="danger" onClick={togglePop}>Help</Button>
             <Modal show={pop} size="xl" centered>
                 <Modal.Header closeButton onClick={togglePop}>
                     <Modal.Title>
@@ -50,7 +50,7 @@ function HelpButton(){
                     <Image src={addHeader} fluid width='25%' height='25%' className="border border-dark"/>
                     <br/><br/>
                     Once in Add Mode, a period of time can be selected through pressing on the appropriate cells.
-                    Upon hovering over a cell, a pop-over will show what block of time it represents.
+                    Upon hovering over a cell, a pop-over will show what block of time it represents. Pressing two cells on the same day activates the <em>Add Menu</em>.
                     Don't worry if you miss click, start and end times can be changed in the task creation menu.
                     <br/>
                     <Image src={addTask} fluid width='40%' height='40%' className="border border-dark"/>

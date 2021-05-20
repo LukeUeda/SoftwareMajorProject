@@ -28,9 +28,10 @@ function Menu(props){
     const submit = () => {
         //Generates a Luxon object from string.
         const date = DateTime.fromSQL(dateValue)
-
-        //Runs Calender.js method to skip to specified week.
-        props.setNewDate(date)
+        if(date.invalid === null){
+            //Runs Calender.js method to skip to specified week.
+            props.setNewDate(date)
+        }
     }
 
     return (

@@ -54,6 +54,7 @@ function SelectUi(props){
         //Setting own parameters to the same as calender component's
         bounds.start = props.selection.selectionStart
         bounds.end = props.selection.selectionEnd
+        setColor(props.selection.color)
         setTask(props.selection.taskName)
 
         if(!props.selection.taskName){ // Focus on the task name field if no task name is present.
@@ -153,7 +154,7 @@ function SelectUi(props){
                 var code = event.keyCode || event.which;
                 if(code === 13) { //13 is the enter keycode
                     if(validation()){
-                        props.submit(bounds, task);
+                        props.submit(bounds, task, color);
                         closeFunc()
                     }
                 }
@@ -189,7 +190,7 @@ function SelectUi(props){
                                 />
                             </Col>
                             <Col>
-                                <div style={{width: '100%', height: '100%', backgroundColor: color}} className="text-center">
+                                <div style={{width: '100%', height: '100%', backgroundColor: color}} className="border border-dark rounded text-center">
                                     {task}
                                 </div>
                             </Col>
